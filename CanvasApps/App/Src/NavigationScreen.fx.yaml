@@ -1,0 +1,131 @@
+NavigationScreen As screen:
+    OnVisible: |
+        =Set(varMaxIndex,Max(List_Navigation,NavIndex));
+        If(varNavIndex=0,Set(varNavIndex,1););
+        ClearCollect(colNavigation,List_Navigation);ClearCollect(colClickedNavs,[])
+
+    Label1_1 As label:
+        Align: =Align.Center
+        FontWeight: =FontWeight.Semibold
+        Height: =70
+        Size: =21
+        Text: =LookUp(List_Navigation,NavIndex=varNavIndex).Name
+        Width: =639
+        Y: =64
+        ZIndex: =2
+
+    Icon1_1 As icon.BackArrow:
+        Icon: =Icon.BackArrow
+        OnSelect: =If(varNavIndex>1,Set(varNavIndex,varNavIndex-1);Remove(colClickedNavs,Last(colClickedNavs)))
+        Visible: =varNavIndex>1
+        ZIndex: =3
+
+    Label2 As label:
+        Height: =70
+        Size: =21
+        Text: =varNavIndex
+        Width: =560
+        X: =80
+        Y: =110
+        ZIndex: =4
+
+    Label1_3 As label:
+        Align: =Align.Center
+        FontWeight: =FontWeight.Semibold
+        Height: =70
+        Size: =21
+        Text: ="{{Projektnamn}}"
+        Width: =560
+        X: =80
+        ZIndex: =6
+
+    "Gallery3 As gallery.'BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0'":
+        DelayItemLoading: =true
+        Height: =936
+        Items: =Distinct(Filter(AddColumns(List_Navigation,"Nav",LookUp('List_Report',ReportID = ID)),NavIndex = varNavIndex && If(!(varNavIndex=1),If(!(varNavIndex=1),Concat(colClickedNavs,Value,","),"")=Concat(NavPath,Value,","),true)),NavValue)
+        Layout: =Layout.Vertical
+        LoadingSpinner: =LoadingSpinner.Data
+        TemplatePadding: =0
+        TemplateSize: =104
+        Y: =200
+        ZIndex: =7
+
+        Image2 As image:
+            Height: =72
+            OnSelect: =Select(Parent)
+            RadiusBottomLeft: =8
+            RadiusBottomRight: =8
+            RadiusTopLeft: =8
+            RadiusTopRight: =8
+            Width: =72
+            X: =16
+            Y: =(Parent.TemplateHeight / 2) - (Self.Height / 2)
+            ZIndex: =1
+
+        Title3 As label:
+            FontWeight: =If(ThisItem.IsSelected, FontWeight.Semibold, FontWeight.Normal)
+            Height: =Self.Size * 1.8
+            OnSelect: =Select(Parent)
+            PaddingBottom: =0
+            PaddingLeft: =0
+            PaddingRight: =0
+            PaddingTop: =0
+            Text: =ThisItem.Value
+            VerticalAlign: =VerticalAlign.Top
+            Width: =Parent.TemplateWidth - 173
+            X: =103
+            Y: =(Parent.TemplateHeight - (Self.Size * 1.8 + Subtitle2.Size * 1.8)) / 2
+            ZIndex: =2
+
+        Subtitle2 As label:
+            FontWeight: =If(ThisItem.IsSelected, FontWeight.Semibold, FontWeight.Normal)
+            Height: =Self.Size * 1.8
+            OnSelect: =Select(Parent)
+            PaddingBottom: =0
+            PaddingLeft: =0
+            PaddingRight: =0
+            PaddingTop: =0
+            Text: =If(!(varNavIndex=1),Concat(colClickedNavs,Value,","),"")
+            VerticalAlign: =VerticalAlign.Top
+            Width: =Title3.Width
+            X: =Title3.X
+            Y: =Title3.Y + Title3.Height
+            ZIndex: =3
+
+        NextArrow2 As icon.ChevronRight:
+            AccessibleLabel: =Self.Tooltip
+            Color: =RGBA(166, 166, 166, 1)
+            Height: =50
+            Icon: =Icon.ChevronRight
+            OnSelect: |-
+                =Select(Parent);
+                
+                If(varNavIndex=varMaxIndex,
+                Navigate(Screen1_2);ClearCollect(colCurrentObject,LookUp(List_Report,ID = LookUp(List_Navigation,Concat(NavPath,Value,",")=Concat(colClickedNavs,Value,",")).ReportID))
+                
+                ,Set(varNavIndex,varNavIndex+1);
+                Collect(colClickedNavs,ThisItem.Value));
+            PaddingBottom: =16
+            PaddingLeft: =16
+            PaddingRight: =16
+            PaddingTop: =16
+            Tooltip: ="Visa objektinformation"
+            Width: =50
+            X: =Parent.TemplateWidth - Self.Width - 12
+            Y: =(Parent.TemplateHeight / 2) - (Self.Height / 2)
+            ZIndex: =4
+
+        Separator3 As rectangle:
+            Height: =8
+            OnSelect: =Select(Parent)
+            Width: =Parent.TemplateWidth
+            Y: =Parent.TemplateHeight - Self.Height
+            ZIndex: =5
+
+        Rectangle2 As rectangle:
+            Height: =Parent.TemplateHeight - Separator3.Height
+            OnSelect: =Select(Parent)
+            Visible: =ThisItem.IsSelected
+            Width: =4
+            ZIndex: =6
+

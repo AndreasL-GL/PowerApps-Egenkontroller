@@ -1,0 +1,14 @@
+<environmentvariabledefinition schemaname="al_Project_name">
+  <defaultvalue>Egenkontroll</defaultvalue>
+  <description default="Name of the project">
+    <label description="Name of the project" languagecode="1053" />
+  </description>
+  <displayname default="Project_name">
+    <label description="Project_name" languagecode="1053" />
+  </displayname>
+  <introducedversion>1.0.0.0</introducedversion>
+  <iscustomizable>1</iscustomizable>
+  <isrequired>0</isrequired>
+  <secretstore>0</secretstore>
+  <type>100000000</type>
+</environmentvariabledefinition>

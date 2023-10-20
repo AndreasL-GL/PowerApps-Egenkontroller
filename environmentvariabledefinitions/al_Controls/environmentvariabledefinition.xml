@@ -1,0 +1,11 @@
+<environmentvariabledefinition schemaname="al_Controls">
+  <defaultvalue>[ {   "code": "SD4.3.1",   "name": "GATU-",   "description": "Skötselkod för gatubelysning. Detta omfattar reparation och underhåll av belysning längs gator och vägar."  },  {   "code": "SD4.3.3",   "name": "MILJÖBELYSNING",   "description": "Skötselkod för miljöbelysning. Detta inkluderar belysning av parker, grönområden och andra miljöer för estetiska och säkerhetsändamål."  },  {   "code": "SD4.4",   "name": "SKYLTAR",   "description": "Skötselkod för skyltar. Detta omfattar vård och underhåll av olika typer av skyltar, inklusive vägskyltar och informationsskyltar."  }]</defaultvalue>
+  <displayname default="Controls">
+    <label description="Controls" languagecode="1053" />
+  </displayname>
+  <introducedversion>1.0.0.0</introducedversion>
+  <iscustomizable>1</iscustomizable>
+  <isrequired>0</isrequired>
+  <secretstore>0</secretstore>
+  <type>100000000</type>
+</environmentvariabledefinition>

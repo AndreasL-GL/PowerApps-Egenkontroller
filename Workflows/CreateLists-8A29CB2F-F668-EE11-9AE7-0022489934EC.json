@@ -1,0 +1,2825 @@
+{
+  "properties": {
+    "connectionReferences": {
+      "shared_sharepointonline_2": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "al_sharedsharepointonline_636d0"
+        },
+        "api": {
+          "name": "shared_sharepointonline"
+        }
+      },
+      "shared_sharepointonline_3": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "al_Sharepoint"
+        },
+        "api": {
+          "name": "shared_sharepointonline"
+        }
+      },
+      "shared_commondataserviceforapps_2": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "al_sharedcommondataserviceforapps_6fe71"
+        },
+        "api": {
+          "name": "shared_commondataserviceforapps"
+        }
+      },
+      "shared_commondataserviceforapps": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "new_sharedcommondataserviceforapps_fcef3"
+        },
+        "api": {
+          "name": "shared_commondataserviceforapps"
+        }
+      },
+      "shared_powerappsforappmakers": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "cat_sharedpowerappsforappmakers_56d1d"
+        },
+        "api": {
+          "name": "shared_powerappsforappmakers"
+        }
+      },
+      "shared_sharepointonline": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "new_sharedsharepointonline_7493a"
+        },
+        "api": {
+          "name": "shared_sharepointonline"
+        }
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$connections": {
+          "defaultValue": {},
+          "type": "Object"
+        },
+        "$authentication": {
+          "defaultValue": {},
+          "type": "SecureObject"
+        },
+        "Information_field_description (al_Information_field_description)": {
+          "defaultValue": "Innehåller information till personal",
+          "type": "String",
+          "metadata": {
+            "schemaName": "al_Information_field_description",
+            "description": "Multilanguage support for information field description"
+          }
+        },
+        "Status_field_description (al_Status_field_description)": {
+          "defaultValue": "Status för egenkontrollen, om den är klar eller ej.",
+          "type": "String",
+          "metadata": {
+            "schemaName": "al_Status_field_description"
+          }
+        },
+        "Sharepoint_Site (al_Sharepoint_Site)": {
+          "defaultValue": "https://greenlandscapingmalmo.sharepoint.com/sites/Avvikelsehantering2",
+          "type": "String",
+          "metadata": {
+            "schemaName": "al_Sharepoint_Site"
+          }
+        },
+        "Navigation (al_Navigation)": {
+          "defaultValue": {
+            "Nav1": "City",
+            "Nav2": "Week",
+            "Nav3": "Weekday"
+          },
+          "type": "Object",
+          "metadata": {
+            "schemaName": "al_Navigation",
+            "description": "Used for the navigation menus in the app."
+          }
+        }
+      },
+      "triggers": {
+        "manual": {
+          "metadata": {
+            "operationMetadataId": "91eec486-56a0-4223-bcf5-1f6b488a383e"
+          },
+          "type": "Request",
+          "kind": "Button",
+          "inputs": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "text": {
+                  "title": "Site",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter your input",
+                  "x-ms-content-hint": "TEXT"
+                },
+                "text_1": {
+                  "title": "Project Name",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter your input",
+                  "x-ms-content-hint": "TEXT"
+                },
+                "text_2": {
+                  "title": "ControlItems",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter your input",
+                  "x-ms-content-hint": "TEXT"
+                },
+                "text_3": {
+                  "title": "Locations",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter your input",
+                  "x-ms-content-hint": "TEXT"
+                },
+                "text_4": {
+                  "title": "ControlValues",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter your input",
+                  "x-ms-content-hint": "TEXT"
+                }
+              },
+              "required": [
+                "text",
+                "text_1",
+                "text_2",
+                "text_3",
+                "text_4"
+              ]
+            }
+          }
+        }
+      },
+      "actions": {
+        "Kontrollmoment_Array": {
+          "runAfter": {
+            "List_Control_Schema": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "3fdb70ac-7301-4fc9-b15c-38bc54e73046"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "Kontrollmoment",
+                "type": "array"
+              }
+            ]
+          }
+        },
+        "Kontrollmoment_med_länkar": {
+          "runAfter": {
+            "Kontrollmoment_Array": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "8be42280-2552-466b-b2cc-777a66048d52"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "KontrollmomentLänkar",
+                "type": "array"
+              }
+            ]
+          }
+        },
+        "Create_report_list": {
+          "actions": {
+            "Send_an_HTTP_request_to_SharePoint": {
+              "runAfter": {},
+              "metadata": {
+                "operationMetadataId": "ac8434e5-ce09-4677-8f0d-2c413a55e80d"
+              },
+              "type": "OpenApiConnection",
+              "inputs": {
+                "host": {
+                  "connectionName": "shared_sharepointonline_2",
+                  "operationId": "HttpRequest",
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+                },
+                "parameters": {
+                  "dataset": "@triggerBody()['text']",
+                  "parameters/method": "POST",
+                  "parameters/uri": "_api/web/lists",
+                  "parameters/headers": {
+                    "content-type": "application/json"
+                  },
+                  "parameters/body": "{\n        \"AllowContentTypes\": false,\n        \"BaseTemplate\": 100,\n        \"ContentTypesEnabled\": false,\n        \"Description\": \"My new list\",\n        \"Title\": \"@{triggerBody()['text_1']} Report\",\n        \"EnableAttachments\":true,\n        \"Hidden\":false\n    }"
+                },
+                "authentication": {
+                  "type": "Raw",
+                  "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']"
+                },
+                "retryPolicy": {
+                  "type": "none"
+                }
+              }
+            },
+            "Information": {
+              "runAfter": {
+                "Kontrollmoment": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "ac8434e5-ce09-4677-8f0d-2c413a55e80d"
+              },
+              "type": "OpenApiConnection",
+              "inputs": {
+                "host": {
+                  "connectionName": "shared_sharepointonline_2",
+                  "operationId": "HttpRequest",
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+                },
+                "parameters": {
+                  "dataset": "@triggerBody()['text']",
+                  "parameters/method": "POST",
+                  "parameters/uri": "@concat('_api', Last(split(body('Send_an_HTTP_request_to_SharePoint')?['d/Fields/__deferred/uri'], '_api')))",
+                  "parameters/body": "{\n\"FieldTypeKind\":3,\n\"Description\":\"@{parameters('Information_field_description (al_Information_field_description)')}\", \n\"Hidden\":false,\n\"EntityPropertyName\":\"Information\",\n\"StaticName\":\"Information\",\n\"Title\":\"Information\"\n}"
+                },
+                "authentication": {
+                  "type": "Raw",
+                  "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']"
+                },
+                "retryPolicy": {
+                  "type": "none"
+                }
+              }
+            },
+            "Status": {
+              "runAfter": {
+                "ReportType": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "ac8434e5-ce09-4677-8f0d-2c413a55e80d"
+              },
+              "type": "OpenApiConnection",
+              "inputs": {
+                "host": {
+                  "connectionName": "shared_sharepointonline_2",
+                  "operationId": "HttpRequest",
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+                },
+                "parameters": {
+                  "dataset": "@triggerBody()['text']",
+                  "parameters/method": "POST",
+                  "parameters/uri": "@concat('_api', Last(split(body('Send_an_HTTP_request_to_SharePoint')?['d/Fields/__deferred/uri'], '_api')))",
+                  "parameters/body": "{\n\"FieldTypeKind\":8,\n\"Description\":\"@{parameters('Status_field_description (al_Status_field_description)')}\", \n\"Hidden\":false,\n\"EntityPropertyName\":\"Status\",\n\"StaticName\":\"Status\",\n\"Title\":\"Status\"\n}"
+                },
+                "authentication": {
+                  "type": "Raw",
+                  "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']"
+                },
+                "retryPolicy": {
+                  "type": "none"
+                }
+              }
+            },
+            "Kontrollmoment": {
+              "runAfter": {
+                "Hide_Title_Field_1": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "b4508dcf-2256-4e11-9d84-b023262b389e"
+              },
+              "type": "ParseJson",
+              "inputs": {
+                "content": [
+                  {
+                    "code": "SD4.3.1",
+                    "name": "GATU-",
+                    "description": "Skötselkod för gatubelysning. Detta omfattar reparation och underhåll av belysning längs gator och vägar."
+                  },
+                  {
+                    "code": "SD4.3.3",
+                    "name": "MILJÖBELYSNING",
+                    "description": "Skötselkod för miljöbelysning. Detta inkluderar belysning av parker, grönområden och andra miljöer för estetiska och säkerhetsändamål."
+                  },
+                  {
+                    "code": "SD4.4",
+                    "name": "SKYLTAR",
+                    "description": "Skötselkod för skyltar. Detta omfattar vård och underhåll av olika typer av skyltar, inklusive vägskyltar och informationsskyltar."
+                  }
+                ],
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "code": {
+                        "type": "string"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "description": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "code",
+                      "name",
+                      "description"
+                    ]
+                  }
+                }
+              }
+            },
+            "Control_ChoiceField": {
+              "runAfter": {
+                "Status": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "ac8434e5-ce09-4677-8f0d-2c413a55e80d"
+              },
+              "type": "OpenApiConnection",
+              "inputs": {
+                "host": {
+                  "connectionName": "shared_sharepointonline_2",
+                  "operationId": "HttpRequest",
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+                },
+                "parameters": {
+                  "dataset": "@triggerBody()['text']",
+                  "parameters/method": "POST",
+                  "parameters/uri": "@concat('_api', Last(split(body('Send_an_HTTP_request_to_SharePoint')?['d/Fields/__deferred/uri'], '_api')))",
+                  "parameters/headers": {
+                    "Content-Type": "application/json;odata=verbose",
+                    "Accept": "application/json;odata=verbose"
+                  },
+                  "parameters/body": "{\n\"__metadata\":{\"type\":\"SP.FieldMultiChoice\"},\n\"FieldTypeKind\":15,\n\"Description\":\"Alla kontrollmoment\", \n\"Hidden\":false,\n\"EntityPropertyName\":\"Controls\",\n\"StaticName\":\"Controls\",\n\"Title\":\"Controls\",\n\"Choices\": {\n               \"__metadata\": {\n                  \"type\": \"Collection(Edm.String)\"\n               },\n               \"results\":@{outputs('ControlValues')}}\n}"
+                },
+                "authentication": {
+                  "type": "Raw",
+                  "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']"
+                },
+                "retryPolicy": {
+                  "type": "none"
+                }
+              }
+            },
+            "Get_title_field": {
+              "runAfter": {
+                "Compose_3": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "ac8434e5-ce09-4677-8f0d-2c413a55e80d"
+              },
+              "type": "OpenApiConnection",
+              "inputs": {
+                "host": {
+                  "connectionName": "shared_sharepointonline_2",
+                  "operationId": "HttpRequest",
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+                },
+                "parameters": {
+                  "dataset": "@triggerBody()['text']",
+                  "parameters/method": "GET",
+                  "parameters/uri": "@concat('_api', Last(split(body('Send_an_HTTP_request_to_SharePoint')?['d/Fields/__deferred/uri'], '_api')),'?$filter=EntityPropertyName%20eq%20%27Title%27')",
+                  "parameters/headers": {
+                    "content-type": "application/json"
+                  }
+                },
+                "authentication": {
+                  "type": "Raw",
+                  "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']"
+                },
+                "retryPolicy": {
+                  "type": "none"
+                }
+              }
+            },
+            "Compose_3": {
+              "runAfter": {
+                "Send_an_HTTP_request_to_SharePoint": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "67ac6b83-f0fe-45e4-86a1-72dd6c83c2c8"
+              },
+              "type": "Compose",
+              "inputs": "/getbytitle('Title')"
+            },
+            "Hide_Title_Field_1": {
+              "runAfter": {
+                "Get_title_field": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "aeb03b3c-99a3-4bd0-9451-351e6171a179"
+              },
+              "type": "OpenApiConnection",
+              "inputs": {
+                "host": {
+                  "connectionName": "shared_sharepointonline_3",
+                  "operationId": "HttpRequest",
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+                },
+                "parameters": {
+                  "dataset": "@triggerBody()['text']",
+                  "parameters/method": "PATCH",
+                  "parameters/uri": "@concat('_api',last(split(First(outputs('Get_title_field')?['body']?['d/results'])?['__metadata/uri'],'_api')))",
+                  "parameters/body": "{\n        \"Required\":false,\n\"Hidden\":true\n    }"
+                },
+                "authentication": {
+                  "type": "Raw",
+                  "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']"
+                }
+              }
+            },
+            "ReportType": {
+              "runAfter": {
+                "Information": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "ac8434e5-ce09-4677-8f0d-2c413a55e80d"
+              },
+              "type": "OpenApiConnection",
+              "inputs": {
+                "host": {
+                  "connectionName": "shared_sharepointonline_2",
+                  "operationId": "HttpRequest",
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+                },
+                "parameters": {
+                  "dataset": "@triggerBody()['text']",
+                  "parameters/method": "POST",
+                  "parameters/uri": "@concat('_api', Last(split(body('Send_an_HTTP_request_to_SharePoint')?['d/Fields/__deferred/uri'], '_api')))",
+                  "parameters/body": "{\n\"FieldTypeKind\":2,\n\"Description\":\"\", \n\"Hidden\":false,\n\"EntityPropertyName\":\"ReportType\",\n\"StaticName\":\"ReportType\",\n\"Title\":\"Report type\"\n}"
+                },
+                "authentication": {
+                  "type": "Raw",
+                  "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']"
+                },
+                "retryPolicy": {
+                  "type": "none"
+                }
+              }
+            },
+            "NavigationField": {
+              "runAfter": {
+                "Control_ChoiceField": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "ac8434e5-ce09-4677-8f0d-2c413a55e80d"
+              },
+              "type": "OpenApiConnection",
+              "inputs": {
+                "host": {
+                  "connectionName": "shared_sharepointonline_2",
+                  "operationId": "HttpRequest",
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+                },
+                "parameters": {
+                  "dataset": "@triggerBody()['text']",
+                  "parameters/method": "POST",
+                  "parameters/uri": "@concat('_api', Last(split(body('Send_an_HTTP_request_to_SharePoint')?['d/Fields/__deferred/uri'], '_api')))",
+                  "parameters/headers": {
+                    "Content-Type": "application/json;odata=verbose",
+                    "Accept": "application/json;odata=verbose"
+                  },
+                  "parameters/body": "{\n\"__metadata\":{\"type\":\"SP.FieldMultiChoice\"},\n\"FieldTypeKind\":15,\n\"Description\":\"Alla kontrollmoment\", \n\"Hidden\":false,\n\n\"Title\":\"NavValues\",\n\"Choices\": {\n               \"__metadata\": {\n                  \"type\": \"Collection(Edm.String)\"\n               },\n               \"results\":@{ outputs('Items')?['NavigationValues']}\n}\n\n}"
+                },
+                "authentication": {
+                  "type": "Raw",
+                  "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']"
+                },
+                "retryPolicy": {
+                  "type": "none"
+                }
+              }
+            },
+            "NavigationField_2": {
+              "runAfter": {
+                "NavigationField": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "ac8434e5-ce09-4677-8f0d-2c413a55e80d"
+              },
+              "type": "OpenApiConnection",
+              "inputs": {
+                "host": {
+                  "connectionName": "shared_sharepointonline_2",
+                  "operationId": "HttpRequest",
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+                },
+                "parameters": {
+                  "dataset": "@triggerBody()['text']",
+                  "parameters/method": "POST",
+                  "parameters/uri": "@concat('_api', Last(split(body('Send_an_HTTP_request_to_SharePoint')?['d/Fields/__deferred/uri'], '_api')))",
+                  "parameters/headers": {
+                    "Content-Type": "application/json;odata=verbose",
+                    "Accept": "application/json;odata=verbose"
+                  },
+                  "parameters/body": "{\n\"__metadata\":{\"type\":\"SP.FieldMultiChoice\"},\n\"FieldTypeKind\":15,\n\"Description\":\"Navigation headers\", \n\"Hidden\":false,\n\"Title\":\"NavHeaders\",\n\"Choices\": {\n               \"__metadata\": {\n                  \"type\": \"Collection(Edm.String)\"\n               },\n               \"results\":@{outputs('Items')?['NavigationItems']}\n}\n\n}"
+                },
+                "authentication": {
+                  "type": "Raw",
+                  "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']"
+                },
+                "retryPolicy": {
+                  "type": "none"
+                }
+              }
+            }
+          },
+          "runAfter": {
+            "Initialize_variable": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "71272a78-eaaa-47dd-864e-11810469b3b2"
+          },
+          "type": "Scope"
+        },
+        "Create_Control_List": {
+          "actions": {
+            "Create_ControlValues_List": {
+              "runAfter": {},
+              "metadata": {
+                "operationMetadataId": "7cdc6b09-f834-45d6-a08d-76ec196269e3"
+              },
+              "type": "OpenApiConnection",
+              "inputs": {
+                "host": {
+                  "connectionName": "shared_sharepointonline_2",
+                  "operationId": "HttpRequest",
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+                },
+                "parameters": {
+                  "dataset": "@triggerBody()['text']",
+                  "parameters/method": "POST",
+                  "parameters/uri": "_api/web/lists",
+                  "parameters/body": "{\n        \"AllowContentTypes\": false,\n        \"BaseTemplate\": 100,\n        \"ContentTypesEnabled\": false,\n        \"Description\": \"List for Control values.\",\n        \"Title\": \"@{triggerBody()['text_1']} Controls\",\n        \"EnableAttachments\":true,\n        \"Hidden\":false\n    }"
+                },
+                "authentication": {
+                  "type": "Raw",
+                  "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']"
+                }
+              }
+            },
+            "ReportID_Field": {
+              "runAfter": {
+                "Hide_TItle_Field": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "ac8434e5-ce09-4677-8f0d-2c413a55e80d"
+              },
+              "type": "OpenApiConnection",
+              "inputs": {
+                "host": {
+                  "connectionName": "shared_sharepointonline_2",
+                  "operationId": "HttpRequest",
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+                },
+                "parameters": {
+                  "dataset": "@triggerBody()['text']",
+                  "parameters/method": "POST",
+                  "parameters/uri": "@concat('_api', Last(split(body('Create_ControlValues_List')?['d/Fields/__deferred/uri'], '_api')))",
+                  "parameters/body": "{\n\"FieldTypeKind\":5,\n\"Description\":\"Report ID \", \n\"Hidden\":false,\n\"Title\":\"ReportID\"\n}"
+                },
+                "authentication": {
+                  "type": "Raw",
+                  "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']"
+                },
+                "retryPolicy": {
+                  "type": "none"
+                }
+              }
+            },
+            "Control_value_Field": {
+              "runAfter": {
+                "ReportID_Field": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "ac8434e5-ce09-4677-8f0d-2c413a55e80d"
+              },
+              "type": "OpenApiConnection",
+              "inputs": {
+                "host": {
+                  "connectionName": "shared_sharepointonline_2",
+                  "operationId": "HttpRequest",
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+                },
+                "parameters": {
+                  "dataset": "@triggerBody()['text']",
+                  "parameters/method": "POST",
+                  "parameters/uri": "@concat('_api', Last(split(body('Create_ControlValues_List')?['d/Fields/__deferred/uri'], '_api')))",
+                  "parameters/body": "{\n\"FieldTypeKind\":2,\n\"Description\":\"Control Value \", \n\"Hidden\":false,\n\"EntityPropertyName\":\"CValue\",\n\"StaticName\":\"CValue\",\n\"Title\":\"CValue\"\n}"
+                },
+                "authentication": {
+                  "type": "Raw",
+                  "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']"
+                },
+                "retryPolicy": {
+                  "type": "none"
+                }
+              }
+            },
+            "Control_name_Field": {
+              "runAfter": {
+                "Control_value_Field": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "ac8434e5-ce09-4677-8f0d-2c413a55e80d"
+              },
+              "type": "OpenApiConnection",
+              "inputs": {
+                "host": {
+                  "connectionName": "shared_sharepointonline_2",
+                  "operationId": "HttpRequest",
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+                },
+                "parameters": {
+                  "dataset": "@triggerBody()['text']",
+                  "parameters/method": "POST",
+                  "parameters/uri": "@concat('_api', Last(split(body('Create_ControlValues_List')?['d/Fields/__deferred/uri'], '_api')))",
+                  "parameters/body": "{\n\"FieldTypeKind\":2,\n\"Description\":\"Name of the control job\", \n\"Hidden\":false,\n\"EntityPropertyName\":\"Control\",\n\"StaticName\":\"Control\",\n\"Title\":\"Control\"\n}"
+                },
+                "authentication": {
+                  "type": "Raw",
+                  "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']"
+                },
+                "retryPolicy": {
+                  "type": "none"
+                }
+              }
+            },
+            "Get_title_field_3": {
+              "runAfter": {
+                "Create_ControlValues_List": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "ac8434e5-ce09-4677-8f0d-2c413a55e80d"
+              },
+              "type": "OpenApiConnection",
+              "inputs": {
+                "host": {
+                  "connectionName": "shared_sharepointonline_2",
+                  "operationId": "HttpRequest",
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+                },
+                "parameters": {
+                  "dataset": "@triggerBody()['text']",
+                  "parameters/method": "GET",
+                  "parameters/uri": "@concat('_api', Last(split(body('Create_ControlValues_List')?['d/Fields/__deferred/uri'], '_api')), '?$filter=EntityPropertyName%20eq%20%27Title%27')",
+                  "parameters/headers": {
+                    "content-type": "application/json"
+                  }
+                },
+                "authentication": {
+                  "type": "Raw",
+                  "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']"
+                },
+                "retryPolicy": {
+                  "type": "none"
+                }
+              }
+            },
+            "Hide_TItle_Field": {
+              "runAfter": {
+                "Get_title_field_3": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "aeb03b3c-99a3-4bd0-9451-351e6171a179"
+              },
+              "type": "OpenApiConnection",
+              "inputs": {
+                "host": {
+                  "connectionName": "shared_sharepointonline_3",
+                  "operationId": "HttpRequest",
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+                },
+                "parameters": {
+                  "dataset": "@triggerBody()['text']",
+                  "parameters/method": "PATCH",
+                  "parameters/uri": "@concat('_api', last(split(First(outputs('Get_title_field_3')?['body']?['d/results'])?['__metadata/uri'], '_api')))",
+                  "parameters/body": "{\n        \"Required\":false,\n\"Hidden\":true\n    }"
+                },
+                "authentication": {
+                  "type": "Raw",
+                  "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']"
+                }
+              }
+            }
+          },
+          "runAfter": {
+            "Finished_report_list": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "f160be20-751a-4c79-969f-f92912ea4ff1"
+          },
+          "type": "Scope"
+        },
+        "List_rows": {
+          "runAfter": {
+            "LocationItems": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "9e52626c-0fc4-408c-8bf5-3c934f3a044c"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps_2",
+              "operationId": "ListRecords",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "entityName": "environmentvariablevalues"
+            },
+            "authentication": {
+              "type": "Raw",
+              "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']"
+            }
+          }
+        },
+        "List_Report_Schema": {
+          "runAfter": {
+            "List_rows": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "1c994d82-779d-4446-8696-9fd5a4fc36c8"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "List_Report Schema",
+                "type": "string"
+              }
+            ]
+          }
+        },
+        "List_Control_Schema": {
+          "runAfter": {
+            "List_Report_Schema": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "fd4e2c0d-4a16-4b65-8a63-ab8889741201"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "List_Control Schema",
+                "type": "string"
+              }
+            ]
+          }
+        },
+        "Create_EnvironmentVariable_List": {
+          "actions": {
+            "Send_an_HTTP_request_to_SharePoint_2": {
+              "runAfter": {},
+              "metadata": {
+                "operationMetadataId": "ac8434e5-ce09-4677-8f0d-2c413a55e80d"
+              },
+              "type": "OpenApiConnection",
+              "inputs": {
+                "host": {
+                  "connectionName": "shared_sharepointonline_2",
+                  "operationId": "HttpRequest",
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+                },
+                "parameters": {
+                  "dataset": "@triggerBody()['text']",
+                  "parameters/method": "POST",
+                  "parameters/uri": "_api/web/lists",
+                  "parameters/headers": {
+                    "content-type": "application/json"
+                  },
+                  "parameters/body": "{\n        \"AllowContentTypes\": false,\n        \"BaseTemplate\": 100,\n        \"ContentTypesEnabled\": false,\n        \"Description\": \"My new list\",\n        \"Title\": \"@{triggerBody()['text_1']} Variables\",\n        \"EnableAttachments\":true,\n        \"Hidden\":false\n    }"
+                },
+                "authentication": {
+                  "type": "Raw",
+                  "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']"
+                },
+                "retryPolicy": {
+                  "type": "none"
+                }
+              }
+            },
+            "Kontrollmoment_2": {
+              "runAfter": {
+                "List_rows_5": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "b4508dcf-2256-4e11-9d84-b023262b389e"
+              },
+              "type": "ParseJson",
+              "inputs": {
+                "content": [
+                  {
+                    "code": "SD4.3.1",
+                    "name": "GATU-",
+                    "description": "Skötselkod för gatubelysning. Detta omfattar reparation och underhåll av belysning längs gator och vägar."
+                  },
+                  {
+                    "code": "SD4.3.3",
+                    "name": "MILJÖBELYSNING",
+                    "description": "Skötselkod för miljöbelysning. Detta inkluderar belysning av parker, grönområden och andra miljöer för estetiska och säkerhetsändamål."
+                  },
+                  {
+                    "code": "SD4.4",
+                    "name": "SKYLTAR",
+                    "description": "Skötselkod för skyltar. Detta omfattar vård och underhåll av olika typer av skyltar, inklusive vägskyltar och informationsskyltar."
+                  }
+                ],
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "code": {
+                        "type": "string"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "description": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "code",
+                      "name",
+                      "description"
+                    ]
+                  }
+                }
+              }
+            },
+            "List_rows_5": {
+              "runAfter": {
+                "Send_an_HTTP_request_to_SharePoint_2": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "ec397a71-cfb5-46e9-ac36-ffc00314e63c"
+              },
+              "type": "OpenApiConnection",
+              "inputs": {
+                "host": {
+                  "connectionName": "shared_commondataserviceforapps",
+                  "operationId": "ListRecords",
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                },
+                "parameters": {
+                  "entityName": "environmentvariabledefinitions"
+                },
+                "authentication": {
+                  "type": "Raw",
+                  "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']"
+                }
+              }
+            },
+            "Apply_to_each_4": {
+              "foreach": "@outputs('List_rows_5')?['body/value']",
+              "actions": {
+                "List_rows_6": {
+                  "runAfter": {},
+                  "metadata": {
+                    "operationMetadataId": "c50b64e3-c7c4-430a-b220-9db84a9bb23b"
+                  },
+                  "type": "OpenApiConnection",
+                  "inputs": {
+                    "host": {
+                      "connectionName": "shared_commondataserviceforapps",
+                      "operationId": "ListRecords",
+                      "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                    },
+                    "parameters": {
+                      "entityName": "environmentvariablevalues",
+                      "$filter": "_environmentvariabledefinitionid_value eq @{items('Apply_to_each_4')?['environmentvariabledefinitionid']}"
+                    },
+                    "authentication": {
+                      "type": "Raw",
+                      "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']"
+                    }
+                  }
+                },
+                "Apply_to_each_5": {
+                  "foreach": "@outputs('List_rows_6')?['body/value']",
+                  "actions": {
+                    "Condition_5": {
+                      "actions": {},
+                      "runAfter": {},
+                      "else": {
+                        "actions": {
+                          "Compose_2": {
+                            "runAfter": {},
+                            "metadata": {
+                              "operationMetadataId": "1177bf87-3ccf-4724-81f9-32455c9e942c"
+                            },
+                            "type": "Compose",
+                            "inputs": {
+                              "Title": "@{items('Apply_to_each_4')?['displayname']}",
+                              "Value": "@{items('Apply_to_each_5')?['value']}"
+                            }
+                          },
+                          "Send_an_HTTP_request_to_SharePoint_4": {
+                            "runAfter": {
+                              "Compose_2": [
+                                "Succeeded"
+                              ]
+                            },
+                            "metadata": {
+                              "operationMetadataId": "a24abe49-2844-439e-be8e-22eeef286d25"
+                            },
+                            "type": "OpenApiConnection",
+                            "inputs": {
+                              "host": {
+                                "connectionName": "shared_sharepointonline_2",
+                                "operationId": "HttpRequest",
+                                "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+                              },
+                              "parameters": {
+                                "dataset": "@parameters('Sharepoint_Site (al_Sharepoint_Site)')",
+                                "parameters/method": "POST",
+                                "parameters/uri": "@concat('_api', Last(split(body('Send_an_HTTP_request_to_SharePoint_2')?['d/Items/__deferred/uri'], '_api')))",
+                                "parameters/body": "@outputs('Compose_2')"
+                              },
+                              "authentication": {
+                                "type": "Raw",
+                                "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']"
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "expression": {
+                        "equals": [
+                          "@items('Apply_to_each_5')?['value']",
+                          "@null"
+                        ]
+                      },
+                      "metadata": {
+                        "operationMetadataId": "d6d24b5d-42f7-4507-bbaa-db6b51c3d8e3"
+                      },
+                      "type": "If"
+                    }
+                  },
+                  "runAfter": {
+                    "List_rows_6": [
+                      "Succeeded"
+                    ]
+                  },
+                  "metadata": {
+                    "operationMetadataId": "c19fe5cd-2419-4011-9dcc-ef363193d02b"
+                  },
+                  "type": "Foreach"
+                },
+                "Condition_6": {
+                  "actions": {
+                    "Compose_4": {
+                      "runAfter": {},
+                      "metadata": {
+                        "operationMetadataId": "c3120e09-a2d5-4450-a133-3d40d69fe4ec"
+                      },
+                      "type": "Compose",
+                      "inputs": {
+                        "Title": "@{items('Apply_to_each_4')?['displayname']}",
+                        "Value": "@{items('Apply_to_each_4')?['defaultvalue']}"
+                      }
+                    },
+                    "Send_an_HTTP_request_to_SharePoint_5": {
+                      "runAfter": {
+                        "Compose_4": [
+                          "Succeeded"
+                        ]
+                      },
+                      "metadata": {
+                        "operationMetadataId": "6ab7a0d9-1a70-428b-a5a0-87409497d35c"
+                      },
+                      "type": "OpenApiConnection",
+                      "inputs": {
+                        "host": {
+                          "connectionName": "shared_sharepointonline_2",
+                          "operationId": "HttpRequest",
+                          "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+                        },
+                        "parameters": {
+                          "dataset": "@parameters('Sharepoint_Site (al_Sharepoint_Site)')",
+                          "parameters/method": "POST",
+                          "parameters/uri": "@concat('_api', Last(split(body('Send_an_HTTP_request_to_SharePoint_2')?['d/Items/__deferred/uri'], '_api')))",
+                          "parameters/body": "@outputs('Compose_4')"
+                        },
+                        "authentication": {
+                          "type": "Raw",
+                          "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']"
+                        },
+                        "retryPolicy": {
+                          "type": "none"
+                        }
+                      }
+                    }
+                  },
+                  "runAfter": {
+                    "Apply_to_each_5": [
+                      "Succeeded"
+                    ]
+                  },
+                  "expression": {
+                    "equals": [
+                      "@length(outputs('List_rows_6')?['body/value'])",
+                      0
+                    ]
+                  },
+                  "metadata": {
+                    "operationMetadataId": "18f8ac54-a300-45a7-8079-58b4ca94dc12"
+                  },
+                  "type": "If"
+                }
+              },
+              "runAfter": {
+                "Add_EnvironmentVariable_Field": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "93ca825c-bf6c-45df-ac03-752ca98b35ec"
+              },
+              "type": "Foreach"
+            },
+            "Add_EnvironmentVariable_Field": {
+              "runAfter": {
+                "Kontrollmoment_2": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "ac8434e5-ce09-4677-8f0d-2c413a55e80d"
+              },
+              "type": "OpenApiConnection",
+              "inputs": {
+                "host": {
+                  "connectionName": "shared_sharepointonline_2",
+                  "operationId": "HttpRequest",
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+                },
+                "parameters": {
+                  "dataset": "@triggerBody()['text']",
+                  "parameters/method": "POST",
+                  "parameters/uri": "@concat('_api', Last(split(body('Send_an_HTTP_request_to_SharePoint_2')?['d/Fields/__deferred/uri'], '_api')))",
+                  "parameters/body": "{\n\"FieldTypeKind\":3,\n\"Description\":\"EnvironmentVariable\", \n\"Hidden\":false,\n\"Title\":\"Value\"\n}"
+                },
+                "authentication": {
+                  "type": "Raw",
+                  "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']"
+                },
+                "retryPolicy": {
+                  "type": "none"
+                }
+              }
+            }
+          },
+          "runAfter": {
+            "Create_Control_List": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "71272a78-eaaa-47dd-864e-11810469b3b2"
+          },
+          "type": "Scope"
+        },
+        "Finished_report_list": {
+          "actions": {
+            "Send_an_HTTP_request_to_SharePoint_3": {
+              "runAfter": {},
+              "metadata": {
+                "operationMetadataId": "ac8434e5-ce09-4677-8f0d-2c413a55e80d"
+              },
+              "type": "OpenApiConnection",
+              "inputs": {
+                "host": {
+                  "connectionName": "shared_sharepointonline_2",
+                  "operationId": "HttpRequest",
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+                },
+                "parameters": {
+                  "dataset": "@triggerBody()['text']",
+                  "parameters/method": "POST",
+                  "parameters/uri": "_api/web/lists",
+                  "parameters/headers": {
+                    "content-type": "application/json"
+                  },
+                  "parameters/body": "{\n        \"AllowContentTypes\": false,\n        \"BaseTemplate\": 100,\n        \"ContentTypesEnabled\": false,\n        \"Description\": \"My new list\",\n        \"Title\": \"@{triggerBody()['text_1']} Finished report\",\n        \"EnableAttachments\":true,\n        \"Hidden\":false\n    }"
+                },
+                "authentication": {
+                  "type": "Raw",
+                  "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']"
+                },
+                "retryPolicy": {
+                  "type": "none"
+                }
+              }
+            },
+            "Comment_upon_completion": {
+              "runAfter": {
+                "Hide_Title_Field_2": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "ac8434e5-ce09-4677-8f0d-2c413a55e80d"
+              },
+              "type": "OpenApiConnection",
+              "inputs": {
+                "host": {
+                  "connectionName": "shared_sharepointonline_2",
+                  "operationId": "HttpRequest",
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+                },
+                "parameters": {
+                  "dataset": "@triggerBody()['text']",
+                  "parameters/method": "POST",
+                  "parameters/uri": "@concat('_api', Last(split(body('Send_an_HTTP_request_to_SharePoint_3')?['d/Fields/__deferred/uri'], '_api')))",
+                  "parameters/body": "{\n\"FieldTypeKind\":3,\n\"Description\":\"\", \n\"Hidden\":false,\n\"EntityPropertyName\":\"Kommentar\",\n\"StaticName\":\"Kommentar\",\n\"Title\":\"Kommentar\"\n}"
+                },
+                "authentication": {
+                  "type": "Raw",
+                  "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']"
+                },
+                "retryPolicy": {
+                  "type": "none"
+                }
+              }
+            },
+            "Completed_jobs": {
+              "runAfter": {
+                "ReportID": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "ac8434e5-ce09-4677-8f0d-2c413a55e80d"
+              },
+              "type": "OpenApiConnection",
+              "inputs": {
+                "host": {
+                  "connectionName": "shared_sharepointonline_2",
+                  "operationId": "HttpRequest",
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+                },
+                "parameters": {
+                  "dataset": "@triggerBody()['text']",
+                  "parameters/method": "POST",
+                  "parameters/uri": "@concat('_api', Last(split(body('Send_an_HTTP_request_to_SharePoint_3')?['d/Fields/__deferred/uri'], '_api')))",
+                  "parameters/headers": {
+                    "Content-Type": "application/json;odata=verbose",
+                    "Accept": "application/json;odata=verbose"
+                  },
+                  "parameters/body": "{\n\"__metadata\":{\"type\":\"SP.FieldMultiChoice\"},\n\"FieldTypeKind\":15,\n\"Description\":\"Completed jobs\", \n\"Hidden\":false,\n\"Title\":\"Completed jobs\",\n\"Choices\": {\n               \"__metadata\": {\n                  \"type\": \"Collection(Edm.String)\"\n               },\n               \"results\":@{outputs('ControlValues')}}\n}"
+                },
+                "authentication": {
+                  "type": "Raw",
+                  "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']"
+                },
+                "retryPolicy": {
+                  "type": "none"
+                }
+              }
+            },
+            "Latitude": {
+              "runAfter": {
+                "Jobs_not_completed": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "ac8434e5-ce09-4677-8f0d-2c413a55e80d"
+              },
+              "type": "OpenApiConnection",
+              "inputs": {
+                "host": {
+                  "connectionName": "shared_sharepointonline_2",
+                  "operationId": "HttpRequest",
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+                },
+                "parameters": {
+                  "dataset": "@triggerBody()['text']",
+                  "parameters/method": "POST",
+                  "parameters/uri": "@concat('_api', Last(split(body('Send_an_HTTP_request_to_SharePoint_3')?['d/Fields/__deferred/uri'], '_api')))",
+                  "parameters/body": "{\n\"FieldTypeKind\":2,\n\"Description\":\"\", \n\"Hidden\":false,\n\"EntityPropertyName\":\"Latitude\",\n\"StaticName\":\"Latitude\",\n\"Title\":\"Latitude\"\n}"
+                },
+                "authentication": {
+                  "type": "Raw",
+                  "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']"
+                },
+                "retryPolicy": {
+                  "type": "none"
+                }
+              }
+            },
+            "Compose_5": {
+              "runAfter": {
+                "Send_an_HTTP_request_to_SharePoint_3": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "67ac6b83-f0fe-45e4-86a1-72dd6c83c2c8"
+              },
+              "type": "Compose",
+              "inputs": "/getbytitle('Title')"
+            },
+            "Jobs_not_completed": {
+              "runAfter": {
+                "Completed_jobs": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "ac8434e5-ce09-4677-8f0d-2c413a55e80d"
+              },
+              "type": "OpenApiConnection",
+              "inputs": {
+                "host": {
+                  "connectionName": "shared_sharepointonline_2",
+                  "operationId": "HttpRequest",
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+                },
+                "parameters": {
+                  "dataset": "@triggerBody()['text']",
+                  "parameters/method": "POST",
+                  "parameters/uri": "@concat('_api', Last(split(body('Send_an_HTTP_request_to_SharePoint_3')?['d/Fields/__deferred/uri'], '_api')))",
+                  "parameters/headers": {
+                    "Content-Type": "application/json;odata=verbose",
+                    "Accept": "application/json;odata=verbose"
+                  },
+                  "parameters/body": "{\n\"__metadata\":{\"type\":\"SP.FieldMultiChoice\"},\n\"FieldTypeKind\":15,\n\"Description\":\"Alla kontrollmoment\", \n\"Hidden\":false,\n\"EntityPropertyName\":\"Jobsnotcompleted\",\n\"StaticName\":\"Jobsnotcompleted\",\n\"Title\":\"Jobs not completed\",\n\"Choices\": {\n               \"__metadata\": {\n                  \"type\": \"Collection(Edm.String)\"\n               },\n               \"results\":@{outputs('ControlValues')}}\n}"
+                },
+                "authentication": {
+                  "type": "Raw",
+                  "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']"
+                },
+                "retryPolicy": {
+                  "type": "none"
+                }
+              }
+            },
+            "Navigation_2": {
+              "actions": {
+                "Nav1_2": {
+                  "runAfter": {},
+                  "metadata": {
+                    "operationMetadataId": "ac8434e5-ce09-4677-8f0d-2c413a55e80d"
+                  },
+                  "type": "OpenApiConnection",
+                  "inputs": {
+                    "host": {
+                      "connectionName": "shared_sharepointonline_2",
+                      "operationId": "HttpRequest",
+                      "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+                    },
+                    "parameters": {
+                      "dataset": "@triggerBody()['text']",
+                      "parameters/method": "POST",
+                      "parameters/uri": "@concat('_api', Last(split(body('Send_an_HTTP_request_to_SharePoint_3')?['d/Fields/__deferred/uri'], '_api')))",
+                      "parameters/body": "{\n\"FieldTypeKind\":2,\n\"Description\":\"@{parameters('Information_field_description (al_Information_field_description)')}\", \n\"Hidden\":false,\n\"EntityPropertyName\":\"Nav1\",\n\"StaticName\":\"Nav1\",\n\"Title\":\"@{Coalesce(parameters('Navigation (al_Navigation)')?['Nav1'], 'Nav1')}\"\n}"
+                    },
+                    "authentication": {
+                      "type": "Raw",
+                      "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']"
+                    },
+                    "retryPolicy": {
+                      "type": "none"
+                    }
+                  }
+                },
+                "Nav2_2": {
+                  "runAfter": {
+                    "Nav1_2": [
+                      "Succeeded"
+                    ]
+                  },
+                  "metadata": {
+                    "operationMetadataId": "ac8434e5-ce09-4677-8f0d-2c413a55e80d"
+                  },
+                  "type": "OpenApiConnection",
+                  "inputs": {
+                    "host": {
+                      "connectionName": "shared_sharepointonline_2",
+                      "operationId": "HttpRequest",
+                      "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+                    },
+                    "parameters": {
+                      "dataset": "@triggerBody()['text']",
+                      "parameters/method": "POST",
+                      "parameters/uri": "@concat('_api', Last(split(body('Send_an_HTTP_request_to_SharePoint_3')?['d/Fields/__deferred/uri'], '_api')))",
+                      "parameters/body": "{\n\"FieldTypeKind\":2,\n\"Description\":\"@{parameters('Information_field_description (al_Information_field_description)')}\", \n\"Hidden\":false,\n\"EntityPropertyName\":\"Nav2\",\n\"StaticName\":\"Nav2\",\n\"Title\":\"@{Coalesce(parameters('Navigation (al_Navigation)')?['Nav2'], 'Nav2')}\"\n}"
+                    },
+                    "authentication": {
+                      "type": "Raw",
+                      "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']"
+                    },
+                    "retryPolicy": {
+                      "type": "none"
+                    }
+                  }
+                },
+                "Nav3_2": {
+                  "runAfter": {
+                    "Nav2_2": [
+                      "Succeeded"
+                    ]
+                  },
+                  "metadata": {
+                    "operationMetadataId": "ac8434e5-ce09-4677-8f0d-2c413a55e80d"
+                  },
+                  "type": "OpenApiConnection",
+                  "inputs": {
+                    "host": {
+                      "connectionName": "shared_sharepointonline_2",
+                      "operationId": "HttpRequest",
+                      "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+                    },
+                    "parameters": {
+                      "dataset": "@triggerBody()['text']",
+                      "parameters/method": "POST",
+                      "parameters/uri": "@concat('_api', Last(split(body('Send_an_HTTP_request_to_SharePoint_3')?['d/Fields/__deferred/uri'], '_api')))",
+                      "parameters/body": "{\n\"FieldTypeKind\":2,\n\"Description\":\"@{parameters('Information_field_description (al_Information_field_description)')}\", \n\"Hidden\":false,\n\"EntityPropertyName\":\"Nav3\",\n\"StaticName\":\"Nav3\",\n\"Title\":\"@{Coalesce(parameters('Navigation (al_Navigation)')?['Nav3'], 'Nav3')}\"\n}"
+                    },
+                    "authentication": {
+                      "type": "Raw",
+                      "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']"
+                    },
+                    "retryPolicy": {
+                      "type": "none"
+                    }
+                  }
+                },
+                "Nav4_2": {
+                  "runAfter": {
+                    "Nav3_2": [
+                      "Succeeded"
+                    ]
+                  },
+                  "metadata": {
+                    "operationMetadataId": "ac8434e5-ce09-4677-8f0d-2c413a55e80d"
+                  },
+                  "type": "OpenApiConnection",
+                  "inputs": {
+                    "host": {
+                      "connectionName": "shared_sharepointonline_2",
+                      "operationId": "HttpRequest",
+                      "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+                    },
+                    "parameters": {
+                      "dataset": "@triggerBody()['text']",
+                      "parameters/method": "POST",
+                      "parameters/uri": "@concat('_api', Last(split(body('Send_an_HTTP_request_to_SharePoint_3')?['d/Fields/__deferred/uri'], '_api')))",
+                      "parameters/body": "{\n\"FieldTypeKind\":2,\n\"Description\":\"@{parameters('Information_field_description (al_Information_field_description)')}\", \n\"Hidden\":false,\n\"EntityPropertyName\":\"Nav4\",\n\"StaticName\":\"Nav4\",\n\"Title\":\"@{Coalesce(parameters('Navigation (al_Navigation)')?['Nav4'], 'Nav4')}\"\n}"
+                    },
+                    "authentication": {
+                      "type": "Raw",
+                      "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']"
+                    },
+                    "retryPolicy": {
+                      "type": "none"
+                    }
+                  }
+                },
+                "Nav5_2": {
+                  "runAfter": {
+                    "Nav4_2": [
+                      "Succeeded"
+                    ]
+                  },
+                  "metadata": {
+                    "operationMetadataId": "ac8434e5-ce09-4677-8f0d-2c413a55e80d"
+                  },
+                  "type": "OpenApiConnection",
+                  "inputs": {
+                    "host": {
+                      "connectionName": "shared_sharepointonline_2",
+                      "operationId": "HttpRequest",
+                      "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+                    },
+                    "parameters": {
+                      "dataset": "@triggerBody()['text']",
+                      "parameters/method": "POST",
+                      "parameters/uri": "@concat('_api', Last(split(body('Send_an_HTTP_request_to_SharePoint_3')?['d/Fields/__deferred/uri'], '_api')))",
+                      "parameters/body": "{\n\"FieldTypeKind\":2,\n\"Description\":\"@{parameters('Information_field_description (al_Information_field_description)')}\", \n\"Hidden\":false,\n\"EntityPropertyName\":\"Nav5\",\n\"StaticName\":\"Nav5\",\n\"Title\":\"@{Coalesce(parameters('Navigation (al_Navigation)')?['Nav5'], 'Nav5')}\"\n}"
+                    },
+                    "authentication": {
+                      "type": "Raw",
+                      "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']"
+                    },
+                    "retryPolicy": {
+                      "type": "none"
+                    }
+                  }
+                },
+                "Nav6_2": {
+                  "runAfter": {
+                    "Nav5_2": [
+                      "Succeeded"
+                    ]
+                  },
+                  "metadata": {
+                    "operationMetadataId": "ac8434e5-ce09-4677-8f0d-2c413a55e80d"
+                  },
+                  "type": "OpenApiConnection",
+                  "inputs": {
+                    "host": {
+                      "connectionName": "shared_sharepointonline_2",
+                      "operationId": "HttpRequest",
+                      "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+                    },
+                    "parameters": {
+                      "dataset": "@triggerBody()['text']",
+                      "parameters/method": "POST",
+                      "parameters/uri": "@concat('_api', Last(split(body('Send_an_HTTP_request_to_SharePoint_3')?['d/Fields/__deferred/uri'], '_api')))",
+                      "parameters/body": "{\n\"FieldTypeKind\":2,\n\"Description\":\"@{parameters('Information_field_description (al_Information_field_description)')}\", \n\"Hidden\":false,\n\"EntityPropertyName\":\"Nav6\",\n\"StaticName\":\"Nav6\",\n\"Title\":\"@{Coalesce(parameters('Navigation (al_Navigation)')?['Nav6'], 'Nav6')}\"\n}"
+                    },
+                    "authentication": {
+                      "type": "Raw",
+                      "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']"
+                    },
+                    "retryPolicy": {
+                      "type": "none"
+                    }
+                  }
+                },
+                "Nav7_2": {
+                  "runAfter": {
+                    "Nav6_2": [
+                      "Succeeded"
+                    ]
+                  },
+                  "metadata": {
+                    "operationMetadataId": "ac8434e5-ce09-4677-8f0d-2c413a55e80d"
+                  },
+                  "type": "OpenApiConnection",
+                  "inputs": {
+                    "host": {
+                      "connectionName": "shared_sharepointonline_2",
+                      "operationId": "HttpRequest",
+                      "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+                    },
+                    "parameters": {
+                      "dataset": "@triggerBody()['text']",
+                      "parameters/method": "POST",
+                      "parameters/uri": "@concat('_api', Last(split(body('Send_an_HTTP_request_to_SharePoint_3')?['d/Fields/__deferred/uri'], '_api')))",
+                      "parameters/body": "{\n\"FieldTypeKind\":2,\n\"Description\":\"@{parameters('Information_field_description (al_Information_field_description)')}\", \n\"Hidden\":false,\n\"EntityPropertyName\":\"Nav7\",\n\"StaticName\":\"Nav7\",\n\"Title\":\"@{Coalesce(parameters('Navigation (al_Navigation)')?['Nav7'], 'Nav7')}\"\n}"
+                    },
+                    "authentication": {
+                      "type": "Raw",
+                      "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']"
+                    },
+                    "retryPolicy": {
+                      "type": "none"
+                    }
+                  }
+                },
+                "Nav8_2": {
+                  "runAfter": {
+                    "Nav7_2": [
+                      "Succeeded"
+                    ]
+                  },
+                  "metadata": {
+                    "operationMetadataId": "ac8434e5-ce09-4677-8f0d-2c413a55e80d"
+                  },
+                  "type": "OpenApiConnection",
+                  "inputs": {
+                    "host": {
+                      "connectionName": "shared_sharepointonline_2",
+                      "operationId": "HttpRequest",
+                      "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+                    },
+                    "parameters": {
+                      "dataset": "@triggerBody()['text']",
+                      "parameters/method": "POST",
+                      "parameters/uri": "@concat('_api', Last(split(body('Send_an_HTTP_request_to_SharePoint_3')?['d/Fields/__deferred/uri'], '_api')))",
+                      "parameters/body": "{\n\"FieldTypeKind\":2,\n\"Description\":\"@{parameters('Information_field_description (al_Information_field_description)')}\", \n\"Hidden\":false,\n\"EntityPropertyName\":\"Nav8\",\n\"StaticName\":\"Nav8\",\n\"Title\":\"@{Coalesce(parameters('Navigation (al_Navigation)')?['Nav8'], 'Nav8')}\"\n}"
+                    },
+                    "authentication": {
+                      "type": "Raw",
+                      "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']"
+                    },
+                    "retryPolicy": {
+                      "type": "none"
+                    }
+                  }
+                },
+                "Nav9_2": {
+                  "runAfter": {
+                    "Nav8_2": [
+                      "Succeeded"
+                    ]
+                  },
+                  "metadata": {
+                    "operationMetadataId": "ac8434e5-ce09-4677-8f0d-2c413a55e80d"
+                  },
+                  "type": "OpenApiConnection",
+                  "inputs": {
+                    "host": {
+                      "connectionName": "shared_sharepointonline_2",
+                      "operationId": "HttpRequest",
+                      "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+                    },
+                    "parameters": {
+                      "dataset": "@triggerBody()['text']",
+                      "parameters/method": "POST",
+                      "parameters/uri": "@concat('_api', Last(split(body('Send_an_HTTP_request_to_SharePoint_3')?['d/Fields/__deferred/uri'], '_api')))",
+                      "parameters/body": "{\n\"FieldTypeKind\":2,\n\"Description\":\"@{parameters('Information_field_description (al_Information_field_description)')}\", \n\"Hidden\":false,\n\"EntityPropertyName\":\"Nav9\",\n\"StaticName\":\"Nav9\",\n\"Title\":\"@{Coalesce(parameters('Navigation (al_Navigation)')?['Nav9'], 'Nav9')}\"\n}"
+                    },
+                    "authentication": {
+                      "type": "Raw",
+                      "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']"
+                    },
+                    "retryPolicy": {
+                      "type": "none"
+                    }
+                  }
+                },
+                "Nav10_2": {
+                  "runAfter": {
+                    "Nav9_2": [
+                      "Succeeded"
+                    ]
+                  },
+                  "metadata": {
+                    "operationMetadataId": "ac8434e5-ce09-4677-8f0d-2c413a55e80d"
+                  },
+                  "type": "OpenApiConnection",
+                  "inputs": {
+                    "host": {
+                      "connectionName": "shared_sharepointonline_2",
+                      "operationId": "HttpRequest",
+                      "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+                    },
+                    "parameters": {
+                      "dataset": "@triggerBody()['text']",
+                      "parameters/method": "POST",
+                      "parameters/uri": "@concat('_api', Last(split(body('Send_an_HTTP_request_to_SharePoint_3')?['d/Fields/__deferred/uri'], '_api')))",
+                      "parameters/body": "{\n\"FieldTypeKind\":2,\n\"Description\":\"@{parameters('Information_field_description (al_Information_field_description)')}\", \n\"Hidden\":false,\n\"EntityPropertyName\":\"Nav10\",\n\"StaticName\":\"Nav10\",\n\"Title\":\"@{Coalesce(parameters('Navigation (al_Navigation)')?['Nav10'], 'Nav10')}\"\n}"
+                    },
+                    "authentication": {
+                      "type": "Raw",
+                      "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']"
+                    },
+                    "retryPolicy": {
+                      "type": "none"
+                    }
+                  }
+                }
+              },
+              "runAfter": {
+                "Longitude": [
+                  "Skipped"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "ad409f98-bf3a-4e7b-9090-58fcf22f21a5"
+              },
+              "type": "Scope"
+            },
+            "Longitude": {
+              "runAfter": {
+                "Latitude": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "ac8434e5-ce09-4677-8f0d-2c413a55e80d"
+              },
+              "type": "OpenApiConnection",
+              "inputs": {
+                "host": {
+                  "connectionName": "shared_sharepointonline_2",
+                  "operationId": "HttpRequest",
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+                },
+                "parameters": {
+                  "dataset": "@triggerBody()['text']",
+                  "parameters/method": "POST",
+                  "parameters/uri": "@concat('_api', Last(split(body('Send_an_HTTP_request_to_SharePoint_3')?['d/Fields/__deferred/uri'], '_api')))",
+                  "parameters/body": "{\n\"FieldTypeKind\":2,\n\"Description\":\"\", \n\"Hidden\":false,\n\"EntityPropertyName\":\"Longitude\",\n\"StaticName\":\"Longitude\",\n\"Title\":\"Longitude\"\n}"
+                },
+                "authentication": {
+                  "type": "Raw",
+                  "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']"
+                },
+                "retryPolicy": {
+                  "type": "none"
+                }
+              }
+            },
+            "Get_title_field_2": {
+              "runAfter": {
+                "Compose_5": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "ac8434e5-ce09-4677-8f0d-2c413a55e80d"
+              },
+              "type": "OpenApiConnection",
+              "inputs": {
+                "host": {
+                  "connectionName": "shared_sharepointonline_2",
+                  "operationId": "HttpRequest",
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+                },
+                "parameters": {
+                  "dataset": "@triggerBody()['text']",
+                  "parameters/method": "GET",
+                  "parameters/uri": "@concat('_api', Last(split(body('Send_an_HTTP_request_to_SharePoint_3')?['d/Fields/__deferred/uri'], '_api')), '?$filter=EntityPropertyName%20eq%20%27Title%27')",
+                  "parameters/headers": {
+                    "content-type": "application/json"
+                  }
+                },
+                "authentication": {
+                  "type": "Raw",
+                  "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']"
+                },
+                "retryPolicy": {
+                  "type": "none"
+                }
+              }
+            },
+            "Hide_Title_Field_2": {
+              "runAfter": {
+                "Get_title_field_2": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "aeb03b3c-99a3-4bd0-9451-351e6171a179"
+              },
+              "type": "OpenApiConnection",
+              "inputs": {
+                "host": {
+                  "connectionName": "shared_sharepointonline_3",
+                  "operationId": "HttpRequest",
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+                },
+                "parameters": {
+                  "dataset": "@triggerBody()['text']",
+                  "parameters/method": "PATCH",
+                  "parameters/uri": "@concat('_api', last(split(First(outputs('Get_title_field_2')?['body']?['d/results'])?['__metadata/uri'], '_api')))",
+                  "parameters/body": "{\n        \"Required\":false,\n\"Hidden\":true\n    }"
+                },
+                "authentication": {
+                  "type": "Raw",
+                  "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']"
+                }
+              }
+            },
+            "ReportID": {
+              "runAfter": {
+                "Comment_upon_completion": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "ac8434e5-ce09-4677-8f0d-2c413a55e80d"
+              },
+              "type": "OpenApiConnection",
+              "inputs": {
+                "host": {
+                  "connectionName": "shared_sharepointonline_2",
+                  "operationId": "HttpRequest",
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+                },
+                "parameters": {
+                  "dataset": "@triggerBody()['text']",
+                  "parameters/method": "POST",
+                  "parameters/uri": "@concat('_api', Last(split(body('Send_an_HTTP_request_to_SharePoint_3')?['d/Fields/__deferred/uri'], '_api')))",
+                  "parameters/body": "{\n\"FieldTypeKind\":5,\n\"Description\":\"\", \n\"Hidden\":false,\n\"Title\":\"ReportID\"\n}"
+                },
+                "authentication": {
+                  "type": "Raw",
+                  "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']"
+                },
+                "retryPolicy": {
+                  "type": "none"
+                }
+              }
+            }
+          },
+          "runAfter": {
+            "Create_report_list": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "71272a78-eaaa-47dd-864e-11810469b3b2"
+          },
+          "type": "Scope"
+        },
+        "Initialize_variable": {
+          "runAfter": {
+            "Kontrollmoment_med_länkar": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "15e51ae2-6d69-420a-b7f4-668c43fce209"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "List ID's",
+                "type": "object",
+                "value": {
+                  "Report": "",
+                  "FinishedReport": "",
+                  "Control": "",
+                  "EnvironmentVariable": ""
+                }
+              }
+            ]
+          }
+        },
+        "Scope": {
+          "actions": {
+            "List_rows_2": {
+              "runAfter": {},
+              "metadata": {
+                "operationMetadataId": "ec397a71-cfb5-46e9-ac36-ffc00314e63c"
+              },
+              "type": "OpenApiConnection",
+              "inputs": {
+                "host": {
+                  "connectionName": "shared_commondataserviceforapps",
+                  "operationId": "ListRecords",
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                },
+                "parameters": {
+                  "entityName": "environmentvariabledefinitions"
+                },
+                "authentication": {
+                  "type": "Raw",
+                  "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']"
+                }
+              }
+            },
+            "Apply_to_each": {
+              "foreach": "@outputs('List_rows_2')?['body/value']",
+              "actions": {
+                "Compose": {
+                  "runAfter": {},
+                  "metadata": {
+                    "operationMetadataId": "ffe4f097-8663-4a1d-836f-1c9a7d5f154a"
+                  },
+                  "type": "Compose",
+                  "inputs": "@{items('Apply_to_each')?['displayname']}\n\n@{items('Apply_to_each')?['schemaname']}"
+                },
+                "Condition_3": {
+                  "actions": {
+                    "Set_variable": {
+                      "runAfter": {},
+                      "metadata": {
+                        "operationMetadataId": "f2c92abc-1e77-4664-9627-c14937b1fb6c"
+                      },
+                      "type": "SetVariable",
+                      "inputs": {
+                        "name": "List_Control Schema",
+                        "value": "@items('Apply_to_each')?['schemaname']"
+                      }
+                    },
+                    "Update_a_row_2": {
+                      "runAfter": {
+                        "Set_variable": [
+                          "Succeeded"
+                        ]
+                      },
+                      "metadata": {
+                        "operationMetadataId": "70c45b2e-2878-42cc-b9b1-de7f6752abe5"
+                      },
+                      "type": "OpenApiConnection",
+                      "inputs": {
+                        "host": {
+                          "connectionName": "shared_commondataserviceforapps",
+                          "operationId": "UpdateRecord",
+                          "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                        },
+                        "parameters": {
+                          "entityName": "environmentvariabledefinitions",
+                          "recordId": "@items('Apply_to_each')?['environmentvariabledefinitionid']"
+                        },
+                        "authentication": {
+                          "type": "Raw",
+                          "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']"
+                        }
+                      }
+                    },
+                    "List_rows_3": {
+                      "runAfter": {
+                        "Update_a_row_2": [
+                          "Succeeded"
+                        ]
+                      },
+                      "metadata": {
+                        "operationMetadataId": "9e76ceeb-b9a6-4431-8e14-92d57268f0a6"
+                      },
+                      "type": "OpenApiConnection",
+                      "inputs": {
+                        "host": {
+                          "connectionName": "shared_commondataserviceforapps",
+                          "operationId": "ListRecords",
+                          "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                        },
+                        "parameters": {
+                          "entityName": "environmentvariablevalues",
+                          "$filter": "schemaname eq '@{items('Apply_to_each')?['schemaname']}'"
+                        },
+                        "authentication": {
+                          "type": "Raw",
+                          "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']"
+                        }
+                      }
+                    },
+                    "Condition": {
+                      "actions": {
+                        "Add_a_new_row": {
+                          "runAfter": {},
+                          "metadata": {
+                            "operationMetadataId": "0dd74044-4271-4b7b-bc85-7b6f5f5b53ce"
+                          },
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "host": {
+                              "connectionName": "shared_commondataserviceforapps",
+                              "operationId": "CreateRecord",
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                            },
+                            "parameters": {
+                              "entityName": "environmentvariablevalues",
+                              "item/EnvironmentVariableDefinitionId@odata.bind": "@items('Apply_to_each')?['@odata.editLink']",
+                              "item/schemaname": "@items('Apply_to_each')?['schemaname']",
+                              "item/value": "@body('Send_an_HTTP_request_to_SharePoint')?['d/Id']"
+                            },
+                            "authentication": {
+                              "type": "Raw",
+                              "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']"
+                            }
+                          }
+                        }
+                      },
+                      "runAfter": {
+                        "List_rows_3": [
+                          "Succeeded"
+                        ]
+                      },
+                      "else": {
+                        "actions": {
+                          "Apply_to_each_2": {
+                            "foreach": "@outputs('List_rows_3')?['body/value']",
+                            "actions": {
+                              "Update_a_row": {
+                                "runAfter": {},
+                                "metadata": {
+                                  "operationMetadataId": "09ba8db0-6a1a-47cf-8880-93cd168f8778"
+                                },
+                                "type": "OpenApiConnection",
+                                "inputs": {
+                                  "host": {
+                                    "connectionName": "shared_commondataserviceforapps",
+                                    "operationId": "UpdateRecord",
+                                    "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                                  },
+                                  "parameters": {
+                                    "entityName": "environmentvariablevalues",
+                                    "recordId": "@items('Apply_to_each_2')?['environmentvariablevalueid']",
+                                    "item/schemaname": "@items('Apply_to_each')?['schemaname']",
+                                    "item/value": "@body('Send_an_HTTP_request_to_SharePoint')?['d/Id']"
+                                  },
+                                  "authentication": {
+                                    "type": "Raw",
+                                    "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']"
+                                  }
+                                }
+                              }
+                            },
+                            "runAfter": {},
+                            "metadata": {
+                              "operationMetadataId": "c8ef6401-6b1c-41fc-99ca-70af27c280cf"
+                            },
+                            "type": "Foreach"
+                          }
+                        }
+                      },
+                      "expression": {
+                        "equals": [
+                          "@length(outputs('List_rows_3')?['body/value'])",
+                          0
+                        ]
+                      },
+                      "metadata": {
+                        "operationMetadataId": "b94081e0-75ef-4544-a4c2-77f856bd0216"
+                      },
+                      "type": "If"
+                    }
+                  },
+                  "runAfter": {
+                    "Compose": [
+                      "Succeeded"
+                    ]
+                  },
+                  "expression": {
+                    "equals": [
+                      "@items('Apply_to_each')?['displayname']",
+                      "@string('List_Report')"
+                    ]
+                  },
+                  "metadata": {
+                    "operationMetadataId": "e5ee11b1-53b4-4d53-987b-7831ec1a9503"
+                  },
+                  "type": "If"
+                },
+                "Condition_4": {
+                  "actions": {
+                    "Set_variable_2": {
+                      "runAfter": {},
+                      "metadata": {
+                        "operationMetadataId": "300d141d-c858-4a2f-b2f2-b7bf52ce763d"
+                      },
+                      "type": "SetVariable",
+                      "inputs": {
+                        "name": "List_Control Schema",
+                        "value": "@items('Apply_to_each')?['schemaname']"
+                      }
+                    },
+                    "Update_a_row_4": {
+                      "runAfter": {
+                        "Set_variable_2": [
+                          "Succeeded"
+                        ]
+                      },
+                      "metadata": {
+                        "operationMetadataId": "36e71a46-d330-4ad4-942c-7ed89e23fd43"
+                      },
+                      "type": "OpenApiConnection",
+                      "inputs": {
+                        "host": {
+                          "connectionName": "shared_commondataserviceforapps",
+                          "operationId": "UpdateRecord",
+                          "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                        },
+                        "parameters": {
+                          "entityName": "environmentvariabledefinitions",
+                          "recordId": "@items('Apply_to_each')?['environmentvariabledefinitionid']"
+                        },
+                        "authentication": {
+                          "type": "Raw",
+                          "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']"
+                        }
+                      }
+                    },
+                    "Condition_2": {
+                      "actions": {
+                        "Add_a_new_row_3": {
+                          "runAfter": {},
+                          "metadata": {
+                            "operationMetadataId": "0dd74044-4271-4b7b-bc85-7b6f5f5b53ce"
+                          },
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "host": {
+                              "connectionName": "shared_commondataserviceforapps",
+                              "operationId": "CreateRecord",
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                            },
+                            "parameters": {
+                              "entityName": "environmentvariablevalues",
+                              "item/EnvironmentVariableDefinitionId@odata.bind": "@items('Apply_to_each')?['@odata.editLink']",
+                              "item/schemaname": "@items('Apply_to_each')?['schemaname']",
+                              "item/value": "@body('Create_ControlValues_List')?['d/Id']"
+                            },
+                            "authentication": {
+                              "type": "Raw",
+                              "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']"
+                            }
+                          }
+                        }
+                      },
+                      "runAfter": {
+                        "List_rows_4": [
+                          "Succeeded"
+                        ]
+                      },
+                      "else": {
+                        "actions": {
+                          "Apply_to_each_3": {
+                            "foreach": "@outputs('List_rows_4')?['body/value']",
+                            "actions": {
+                              "Update_a_row_3": {
+                                "runAfter": {},
+                                "metadata": {
+                                  "operationMetadataId": "571dbbf9-a92b-451c-a724-8c12ae0c3467"
+                                },
+                                "type": "OpenApiConnection",
+                                "inputs": {
+                                  "host": {
+                                    "connectionName": "shared_commondataserviceforapps",
+                                    "operationId": "UpdateRecord",
+                                    "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                                  },
+                                  "parameters": {
+                                    "entityName": "environmentvariablevalues",
+                                    "recordId": "@items('Apply_to_each_3')?['environmentvariablevalueid']",
+                                    "item/schemaname": "@items('Apply_to_each')?['schemaname']",
+                                    "item/value": "@body('Create_ControlValues_List')?['d/Id']"
+                                  },
+                                  "authentication": {
+                                    "type": "Raw",
+                                    "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']"
+                                  }
+                                }
+                              }
+                            },
+                            "runAfter": {},
+                            "metadata": {
+                              "operationMetadataId": "1aa6682e-a179-4125-a1f0-08dc345779ac"
+                            },
+                            "type": "Foreach"
+                          }
+                        }
+                      },
+                      "expression": {
+                        "equals": [
+                          "@length(outputs('List_rows_4')?['body/value'])",
+                          0
+                        ]
+                      },
+                      "metadata": {
+                        "operationMetadataId": "7ae5e928-88fa-43ca-bdd4-d4e303a085be"
+                      },
+                      "type": "If"
+                    },
+                    "List_rows_4": {
+                      "runAfter": {
+                        "Update_a_row_4": [
+                          "Succeeded"
+                        ]
+                      },
+                      "metadata": {
+                        "operationMetadataId": "1e2de1c3-79eb-46f4-91f2-b0e76cee114d"
+                      },
+                      "type": "OpenApiConnection",
+                      "inputs": {
+                        "host": {
+                          "connectionName": "shared_commondataserviceforapps",
+                          "operationId": "ListRecords",
+                          "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                        },
+                        "parameters": {
+                          "entityName": "environmentvariablevalues",
+                          "$filter": "schemaname eq '@{items('Apply_to_each')?['schemaname']}'"
+                        },
+                        "authentication": {
+                          "type": "Raw",
+                          "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']"
+                        }
+                      }
+                    }
+                  },
+                  "runAfter": {
+                    "Condition_3": [
+                      "Succeeded"
+                    ]
+                  },
+                  "expression": {
+                    "equals": [
+                      "@items('Apply_to_each')?['displayname']",
+                      "@string('List_Control')"
+                    ]
+                  },
+                  "metadata": {
+                    "operationMetadataId": "87c76a43-186d-41a5-bb06-b28d30659a95"
+                  },
+                  "type": "If"
+                }
+              },
+              "runAfter": {
+                "List_rows_2": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "cc863895-9287-4fd9-89ab-adc4c7cdc432"
+              },
+              "type": "Foreach"
+            },
+            "Get_Apps": {
+              "runAfter": {
+                "Apply_to_each": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "de4e859d-f73c-45c7-b03c-b8367b6a5cdb"
+              },
+              "type": "OpenApiConnection",
+              "inputs": {
+                "host": {
+                  "connectionName": "shared_powerappsforappmakers",
+                  "operationId": "Get-Apps",
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_powerappsforappmakers"
+                },
+                "parameters": {
+                  "api-version": "2016-11-01",
+                  "$top": 250
+                },
+                "authentication": {
+                  "type": "Raw",
+                  "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']"
+                }
+              }
+            },
+            "Apply_to_each_6": {
+              "foreach": "@outputs('Get_Apps')?['body/value']",
+              "actions": {
+                "Condition_7": {
+                  "actions": {
+                    "Publish_App_2": {
+                      "runAfter": {},
+                      "metadata": {
+                        "operationMetadataId": "a7ae43db-dd57-4efa-823c-5d9217ad0582"
+                      },
+                      "type": "OpenApiConnection",
+                      "inputs": {
+                        "host": {
+                          "connectionName": "shared_powerappsforappmakers",
+                          "operationId": "Publish-App",
+                          "apiId": "/providers/Microsoft.PowerApps/apis/shared_powerappsforappmakers"
+                        },
+                        "parameters": {
+                          "app": "@items('Apply_to_each_6')?['name']",
+                          "api-version": "2017-06-01"
+                        },
+                        "authentication": {
+                          "type": "Raw",
+                          "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']"
+                        }
+                      }
+                    }
+                  },
+                  "runAfter": {},
+                  "expression": {
+                    "equals": [
+                      "@items('Apply_to_each_6')?['properties/displayName']",
+                      "@string('MyTestProject')"
+                    ]
+                  },
+                  "metadata": {
+                    "operationMetadataId": "a3ce9590-51a7-4ac4-ba9c-0950fd11f921"
+                  },
+                  "type": "If"
+                }
+              },
+              "runAfter": {
+                "Get_Apps": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "89b89d67-580f-47b8-a197-dd751bc08c8e"
+              },
+              "type": "Foreach"
+            }
+          },
+          "runAfter": {
+            "Respond_to_a_PowerApp_or_flow": [
+              "TimedOut"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "551d6076-97b5-4bca-8182-9c0fa7c59418"
+          },
+          "type": "Scope"
+        },
+        "Respond_to_a_PowerApp_or_flow": {
+          "runAfter": {
+            "Add_items_to_report": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "5ea1c026-f093-4002-9706-a05183fb93bc"
+          },
+          "type": "Response",
+          "kind": "PowerApp",
+          "inputs": {
+            "statusCode": 200,
+            "body": {
+              "reportlistid": "@{ outputs('Send_an_HTTP_request_to_SharePoint')?['body/d/Id']}",
+              "environmentvariablelistid": "@{ outputs('Send_an_HTTP_request_to_SharePoint_2')?['body/d/Id']}",
+              "controllistid": "@{ outputs('Create_ControlValues_List')?['body/d/Id']}",
+              "finishedreportlistid": "@{ outputs('Send_an_HTTP_request_to_SharePoint_3')?['body/d/Id']}",
+              "navigationlist": "@{ outputs('Create_ControlValues_List_2')?['body/d/Id']}"
+            },
+            "schema": {
+              "type": "object",
+              "properties": {
+                "reportlistid": {
+                  "title": "ReportListId",
+                  "x-ms-dynamically-added": true,
+                  "type": "string"
+                },
+                "environmentvariablelistid": {
+                  "title": "EnvironmentVariableListId",
+                  "x-ms-dynamically-added": true,
+                  "type": "string"
+                },
+                "controllistid": {
+                  "title": "ControlListId",
+                  "x-ms-dynamically-added": true,
+                  "type": "string"
+                },
+                "finishedreportlistid": {
+                  "title": "FinishedReportListId",
+                  "x-ms-dynamically-added": true,
+                  "type": "string"
+                },
+                "navigationlist": {
+                  "title": "NavigationList",
+                  "x-ms-dynamically-added": true,
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "Navigation_List": {
+          "actions": {
+            "Create_ControlValues_List_2": {
+              "runAfter": {},
+              "metadata": {
+                "operationMetadataId": "7cdc6b09-f834-45d6-a08d-76ec196269e3"
+              },
+              "type": "OpenApiConnection",
+              "inputs": {
+                "host": {
+                  "connectionName": "shared_sharepointonline_2",
+                  "operationId": "HttpRequest",
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+                },
+                "parameters": {
+                  "dataset": "@triggerBody()['text']",
+                  "parameters/method": "POST",
+                  "parameters/uri": "_api/web/lists",
+                  "parameters/body": "{\n        \"AllowContentTypes\": false,\n        \"BaseTemplate\": 100,\n        \"ContentTypesEnabled\": false,\n        \"Description\": \"List for Control values.\",\n        \"Title\": \"@{triggerBody()['text_1']} Navigation\",\n        \"EnableAttachments\":true,\n        \"Hidden\":false\n    }"
+                },
+                "authentication": {
+                  "type": "Raw",
+                  "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']"
+                }
+              }
+            },
+            "Navigation_Name": {
+              "runAfter": {
+                "Hide_TItle_Field_3": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "ac8434e5-ce09-4677-8f0d-2c413a55e80d"
+              },
+              "type": "OpenApiConnection",
+              "inputs": {
+                "host": {
+                  "connectionName": "shared_sharepointonline_2",
+                  "operationId": "HttpRequest",
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+                },
+                "parameters": {
+                  "dataset": "@triggerBody()['text']",
+                  "parameters/method": "POST",
+                  "parameters/uri": "@concat('_api', Last(split(body('Create_ControlValues_List_2')?['d/Fields/__deferred/uri'], '_api')))",
+                  "parameters/body": "{\n\"FieldTypeKind\":2,\n\"Description\":\"Name \", \n\"Hidden\":false,\n\"Title\":\"Name\"\n}"
+                },
+                "authentication": {
+                  "type": "Raw",
+                  "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']"
+                },
+                "retryPolicy": {
+                  "type": "none"
+                }
+              }
+            },
+            "Get_title_field_4": {
+              "runAfter": {
+                "Create_ControlValues_List_2": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "ac8434e5-ce09-4677-8f0d-2c413a55e80d"
+              },
+              "type": "OpenApiConnection",
+              "inputs": {
+                "host": {
+                  "connectionName": "shared_sharepointonline_2",
+                  "operationId": "HttpRequest",
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+                },
+                "parameters": {
+                  "dataset": "@triggerBody()['text']",
+                  "parameters/method": "GET",
+                  "parameters/uri": "@concat('_api', Last(split(body('Create_ControlValues_List_2')?['d/Fields/__deferred/uri'], '_api')), '?$filter=EntityPropertyName%20eq%20%27Title%27')",
+                  "parameters/headers": {
+                    "content-type": "application/json"
+                  }
+                },
+                "authentication": {
+                  "type": "Raw",
+                  "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']"
+                },
+                "retryPolicy": {
+                  "type": "none"
+                }
+              }
+            },
+            "Hide_TItle_Field_3": {
+              "runAfter": {
+                "Get_title_field_4": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "aeb03b3c-99a3-4bd0-9451-351e6171a179"
+              },
+              "type": "OpenApiConnection",
+              "inputs": {
+                "host": {
+                  "connectionName": "shared_sharepointonline_3",
+                  "operationId": "HttpRequest",
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+                },
+                "parameters": {
+                  "dataset": "@triggerBody()['text']",
+                  "parameters/method": "PATCH",
+                  "parameters/uri": "@concat('_api', last(split(First(outputs('Get_title_field_4')?['body']?['d/results'])?['__metadata/uri'], '_api')))",
+                  "parameters/body": "{\n        \"Required\":false,\n\"Hidden\":true\n    }"
+                },
+                "authentication": {
+                  "type": "Raw",
+                  "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']"
+                }
+              }
+            },
+            "Navigation_Value": {
+              "runAfter": {
+                "Navigation_Name": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "ac8434e5-ce09-4677-8f0d-2c413a55e80d"
+              },
+              "type": "OpenApiConnection",
+              "inputs": {
+                "host": {
+                  "connectionName": "shared_sharepointonline_2",
+                  "operationId": "HttpRequest",
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+                },
+                "parameters": {
+                  "dataset": "@triggerBody()['text']",
+                  "parameters/method": "POST",
+                  "parameters/uri": "@concat('_api', Last(split(body('Create_ControlValues_List_2')?['d/Fields/__deferred/uri'], '_api')))",
+                  "parameters/body": "{\n\"FieldTypeKind\":2,\n\"Description\":\"Navigation Value\", \n\"Hidden\":false,\n\"Title\":\"NavValue\"\n}"
+                },
+                "authentication": {
+                  "type": "Raw",
+                  "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']"
+                },
+                "retryPolicy": {
+                  "type": "none"
+                }
+              }
+            },
+            "Report_ID": {
+              "runAfter": {
+                "Navigation_Value": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "ac8434e5-ce09-4677-8f0d-2c413a55e80d"
+              },
+              "type": "OpenApiConnection",
+              "inputs": {
+                "host": {
+                  "connectionName": "shared_sharepointonline_2",
+                  "operationId": "HttpRequest",
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+                },
+                "parameters": {
+                  "dataset": "@triggerBody()['text']",
+                  "parameters/method": "POST",
+                  "parameters/uri": "@concat('_api', Last(split(body('Create_ControlValues_List_2')?['d/Fields/__deferred/uri'], '_api')))",
+                  "parameters/body": "{\n\"FieldTypeKind\":5,\n\"Description\":\"\", \n\"Hidden\":false,\n\"Title\":\"ReportID\"\n}"
+                },
+                "authentication": {
+                  "type": "Raw",
+                  "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']"
+                },
+                "retryPolicy": {
+                  "type": "none"
+                }
+              }
+            },
+            "NavIndex": {
+              "runAfter": {
+                "Report_ID": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "ac8434e5-ce09-4677-8f0d-2c413a55e80d"
+              },
+              "type": "OpenApiConnection",
+              "inputs": {
+                "host": {
+                  "connectionName": "shared_sharepointonline_2",
+                  "operationId": "HttpRequest",
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+                },
+                "parameters": {
+                  "dataset": "@triggerBody()['text']",
+                  "parameters/method": "POST",
+                  "parameters/uri": "@concat('_api', Last(split(body('Create_ControlValues_List_2')?['d/Fields/__deferred/uri'], '_api')))",
+                  "parameters/body": "{\n\"FieldTypeKind\":5,\n\"Description\":\"NavigationIndex\", \n\"Hidden\":false,\n\"Title\":\"NavIndex\"\n}"
+                },
+                "authentication": {
+                  "type": "Raw",
+                  "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']"
+                },
+                "retryPolicy": {
+                  "type": "none"
+                }
+              }
+            },
+            "Previous_sibling": {
+              "runAfter": {
+                "NavIndex": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "ac8434e5-ce09-4677-8f0d-2c413a55e80d"
+              },
+              "type": "OpenApiConnection",
+              "inputs": {
+                "host": {
+                  "connectionName": "shared_sharepointonline_2",
+                  "operationId": "HttpRequest",
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+                },
+                "parameters": {
+                  "dataset": "@triggerBody()['text']",
+                  "parameters/method": "POST",
+                  "parameters/uri": "@concat('_api', Last(split(body('Create_ControlValues_List_2')?['d/Fields/__deferred/uri'], '_api')))",
+                  "parameters/body": "{\n\"FieldTypeKind\":2,\n\"Description\":\"Previous sibling\", \n\"Hidden\":false,\n\"Title\":\"Sibling\"\n}"
+                },
+                "authentication": {
+                  "type": "Raw",
+                  "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']"
+                },
+                "retryPolicy": {
+                  "type": "none"
+                }
+              }
+            },
+            "NavigationField_3": {
+              "runAfter": {
+                "Previous_sibling": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "ac8434e5-ce09-4677-8f0d-2c413a55e80d"
+              },
+              "type": "OpenApiConnection",
+              "inputs": {
+                "host": {
+                  "connectionName": "shared_sharepointonline_2",
+                  "operationId": "HttpRequest",
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+                },
+                "parameters": {
+                  "dataset": "@triggerBody()['text']",
+                  "parameters/method": "POST",
+                  "parameters/uri": "@concat('_api', Last(split(body('Create_ControlValues_List_2')?['d/Fields/__deferred/uri'], '_api')))",
+                  "parameters/headers": {
+                    "Content-Type": "application/json;odata=verbose",
+                    "Accept": "application/json;odata=verbose"
+                  },
+                  "parameters/body": "{\n\"__metadata\":{\"type\":\"SP.FieldMultiChoice\"},\n\"FieldTypeKind\":15,\n\"Description\":\"Navigation\", \n\"Hidden\":false,\n\n\"Title\":\"NavPath\",\n\"Choices\": {\n               \"__metadata\": {\n                  \"type\": \"Collection(Edm.String)\"\n               },\n               \"results\":@{outputs('Items')?['NavigationValues']}\n}\n\n}"
+                },
+                "authentication": {
+                  "type": "Raw",
+                  "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']"
+                },
+                "retryPolicy": {
+                  "type": "none"
+                }
+              }
+            }
+          },
+          "runAfter": {
+            "Create_EnvironmentVariable_List": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "f160be20-751a-4c79-969f-f92912ea4ff1"
+          },
+          "type": "Scope"
+        },
+        "ControlValues": {
+          "runAfter": {},
+          "metadata": {
+            "operationMetadataId": "e6a0abae-248e-4799-bbc5-fdc47cc222da"
+          },
+          "type": "Compose",
+          "inputs": "@JSON(triggerBody()['text_4'])"
+        },
+        "Items": {
+          "runAfter": {
+            "Initialize_variable_2": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "6bf42792-a8ff-449c-9db7-d67ba152cb2c"
+          },
+          "type": "Compose",
+          "inputs": "@JSON(triggerBody()['text_2'])"
+        },
+        "LocationItems": {
+          "runAfter": {
+            "Items": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "94992c3d-4d27-4c0d-a789-28bc6565501b"
+          },
+          "type": "Compose",
+          "inputs": "@triggerBody()['text_3']"
+        },
+        "Add_items_to_report": {
+          "actions": {
+            "Apply_to_each_7": {
+              "foreach": "@outputs('Items')?['Items']",
+              "actions": {
+                "Send_an_HTTP_request_to_SharePoint_6": {
+                  "runAfter": {},
+                  "metadata": {
+                    "operationMetadataId": "5af6fc51-21ce-4bb1-95fe-798521cbfa1c"
+                  },
+                  "type": "OpenApiConnection",
+                  "inputs": {
+                    "host": {
+                      "connectionName": "shared_sharepointonline",
+                      "operationId": "HttpRequest",
+                      "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+                    },
+                    "parameters": {
+                      "dataset": "@triggerBody()['text']",
+                      "parameters/method": "POST",
+                      "parameters/uri": "@concat('_api', Last(split(body('Send_an_HTTP_request_to_SharePoint')?['d/Items/__deferred/uri'], '_api')))",
+                      "parameters/headers": {
+                        "accept": "application/json;odata=verbose",
+                        "content-type": "application/json;odata=verbose"
+                      },
+                      "parameters/body": "{\n\"__metadata\":{\"type\":\"@{ outputs('Send_an_HTTP_request_to_SharePoint')?['body/d/ListItemEntityTypeFullName']}\"},\n\"Information\":\"@{items('Apply_to_each_7')?['Information']}\",\n\"Report_x0020_type\":\"@{items('Apply_to_each_7')?['ReportType']}\",\n\"Controls\":@{items('Apply_to_each_7')?['Controls']},\n\"NavValues\":{\n        \"__metadata\": {\n          \"type\": \"Collection(Edm.String)\"\n        },\n        \"results\": @{items('Apply_to_each_7')?['NavigationChoices']}\n      },\n\"NavHeaders\":{\n        \"__metadata\": {\n          \"type\": \"Collection(Edm.String)\"\n        },\n        \"results\":@{ outputs('Items')?['NavigationItems']}\n      }\n}"
+                    },
+                    "authentication": {
+                      "type": "Raw",
+                      "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']"
+                    },
+                    "retryPolicy": {
+                      "type": "none"
+                    }
+                  }
+                },
+                "Apply_to_each_8": {
+                  "foreach": "@item()?['Controls/results']",
+                  "actions": {
+                    "Information_2": {
+                      "runAfter": {},
+                      "metadata": {
+                        "operationMetadataId": "ac8434e5-ce09-4677-8f0d-2c413a55e80d"
+                      },
+                      "type": "OpenApiConnection",
+                      "inputs": {
+                        "host": {
+                          "connectionName": "shared_sharepointonline_2",
+                          "operationId": "HttpRequest",
+                          "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+                        },
+                        "parameters": {
+                          "dataset": "@triggerBody()['text']",
+                          "parameters/method": "POST",
+                          "parameters/uri": "@concat('_api', Last(split(body('Create_ControlValues_List')?['d/Items/__deferred/uri'], '_api')))",
+                          "parameters/headers": {
+                            "accept": "application/json;odata=verbose",
+                            "content-type": "application/json;odata=verbose"
+                          },
+                          "parameters/body": "{\n\"__metadata\":{\"type\":\"@{outputs('Create_ControlValues_List')?['body/d/ListItemEntityTypeFullName']}\"},\n\"ReportID\":@{ outputs('Send_an_HTTP_request_to_SharePoint_6')?['body/d/ID']},\n\"Control\":\"@{item()}\"\n}"
+                        },
+                        "authentication": {
+                          "type": "Raw",
+                          "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']"
+                        },
+                        "retryPolicy": {
+                          "type": "none"
+                        }
+                      }
+                    }
+                  },
+                  "runAfter": {
+                    "Apply_to_each_11": [
+                      "Succeeded"
+                    ]
+                  },
+                  "metadata": {
+                    "operationMetadataId": "0b4d901b-f805-4afb-b56e-3220406bc11e"
+                  },
+                  "type": "Foreach"
+                },
+                "Apply_to_each_11": {
+                  "foreach": "@items('Apply_to_each_7')?['NavigationValues']",
+                  "actions": {
+                    "Add_Navigation_item": {
+                      "runAfter": {},
+                      "metadata": {
+                        "operationMetadataId": "ac8434e5-ce09-4677-8f0d-2c413a55e80d"
+                      },
+                      "type": "OpenApiConnection",
+                      "inputs": {
+                        "host": {
+                          "connectionName": "shared_sharepointonline_2",
+                          "operationId": "HttpRequest",
+                          "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+                        },
+                        "parameters": {
+                          "dataset": "@triggerBody()['text']",
+                          "parameters/method": "POST",
+                          "parameters/uri": "@concat('_api', Last(split(body('Create_ControlValues_List_2')?['d/Items/__deferred/uri'], '_api')))",
+                          "parameters/headers": {
+                            "accept": "application/json;odata=verbose",
+                            "content-type": "application/json;odata=verbose"
+                          },
+                          "parameters/body": "{\n\"__metadata\":{\"type\":\"@{outputs('Create_ControlValues_List_2')?['body/d/ListItemEntityTypeFullName']}\"},\n\"ReportID\":@{outputs('Send_an_HTTP_request_to_SharePoint_6')?['body/d/ID']},\n\"Name\":\"@{items('Apply_to_each_11')?['Name']}\",\n\"NavIndex\":@{items('Apply_to_each_11')?['NavIndex']},\n\"NavValue\":\"@{items('Apply_to_each_11')?['Value']}\",\n\"NavPath\":{\n        \"__metadata\": {\n          \"type\": \"Collection(Edm.String)\"\n        },\n        \"results\": \n@{variables('Sibling')}      }\n}"
+                        },
+                        "authentication": {
+                          "type": "Raw",
+                          "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']"
+                        },
+                        "retryPolicy": {
+                          "type": "none"
+                        }
+                      }
+                    },
+                    "Append_to_array_variable": {
+                      "runAfter": {
+                        "Add_Navigation_item": [
+                          "Succeeded"
+                        ]
+                      },
+                      "metadata": {
+                        "operationMetadataId": "6d035fd9-4783-4654-8bc2-a4e59b4d12d6"
+                      },
+                      "type": "AppendToArrayVariable",
+                      "inputs": {
+                        "name": "Sibling",
+                        "value": "@items('Apply_to_each_11')?['Value']"
+                      }
+                    }
+                  },
+                  "runAfter": {
+                    "Set_variable_3": [
+                      "Succeeded"
+                    ]
+                  },
+                  "metadata": {
+                    "operationMetadataId": "503f62f2-bc4c-49a9-942b-1e8896b63754"
+                  },
+                  "type": "Foreach"
+                },
+                "Set_variable_3": {
+                  "runAfter": {
+                    "Send_an_HTTP_request_to_SharePoint_6": [
+                      "Succeeded"
+                    ]
+                  },
+                  "metadata": {
+                    "operationMetadataId": "707f1ff4-1cb3-42e9-9dae-86d6f6814e07"
+                  },
+                  "type": "SetVariable",
+                  "inputs": {
+                    "name": "Sibling",
+                    "value": []
+                  }
+                }
+              },
+              "runAfter": {},
+              "metadata": {
+                "operationMetadataId": "b4b2beb9-c711-45d4-85cb-a2d06985a8db"
+              },
+              "type": "Foreach"
+            }
+          },
+          "runAfter": {
+            "Navigation_List": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "ef901613-5c24-4db0-ae1d-492c15a605cc"
+          },
+          "type": "Scope"
+        },
+        "Initialize_variable_2": {
+          "runAfter": {
+            "ControlValues": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "8b4d8e22-5385-48b9-938d-c0d32a98702f"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "Sibling",
+                "type": "array"
+              }
+            ]
+          }
+        }
+      }
+    },
+    "templateName": ""
+  },
+  "schemaVersion": "1.0.0.0"
+}

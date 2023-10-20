@@ -1,0 +1,15 @@
+<environmentvariabledefinition schemaname="al_SharepointSiteURL">
+  <apiid>/providers/microsoft.powerapps/apis/shared_sharepointonline</apiid>
+  <description default="URL To the sharepoint site">
+    <label description="URL To the sharepoint site" languagecode="1053" />
+  </description>
+  <displayname default="Sharepoint Site URL">
+    <label description="Sharepoint Site URL" languagecode="1053" />
+  </displayname>
+  <introducedversion>1.0.0.0</introducedversion>
+  <iscustomizable>1</iscustomizable>
+  <isrequired>0</isrequired>
+  <parameterkey>dataset</parameterkey>
+  <secretstore>0</secretstore>
+  <type>100000004</type>
+</environmentvariabledefinition>

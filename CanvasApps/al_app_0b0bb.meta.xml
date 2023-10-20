@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CanvasApp xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>al_app_0b0bb</Name>
+  <AppVersion>2023-10-20T08:20:55Z</AppVersion>
+  <Status>NotReady</Status>
+  <CreatedByClientVersion>3.23102.16.0</CreatedByClientVersion>
+  <MinClientVersion>3.23102.16.0</MinClientVersion>
+  <Tags>{"primaryDeviceWidth":"640","primaryDeviceHeight":"1136","supportsPortrait":"true","supportsLandscape":"true","primaryFormFactor":"Phone","showStatusBar":"false","publisherVersion":"3.23102.16","minimumRequiredApiVersion":"2.2.0","hasComponent":"false","hasUnlockedComponent":"false","isUnifiedRootApp":"false","sienaVersion":"20231019T085538Z-3.23101.23.0"}</Tags>
+  <IsCdsUpgraded>0</IsCdsUpgraded>
+  <GalleryItemId xsi:nil="true"></GalleryItemId>
+  <BackgroundColor>RGBA(0,176,240,1)</BackgroundColor>
+  <DisplayName>MyTestProject</DisplayName>
+  <Description></Description>
+  <CommitMessage></CommitMessage>
+  <Publisher></Publisher>
+  <AuthorizationReferences>[]</AuthorizationReferences>
+  <ConnectionReferences>{"cf8fe8af-7432-4616-8375-58feb31bae9b":{"id":"/providers/microsoft.powerapps/apis/shared_sharepointonline","displayName":"SharePoint","iconUri":"https://connectoricons-prod.azureedge.net/u/henryorsborn/partial-builds/asev3migrations-with-resourceTemplate/1.0.1653.3414/sharepointonline/icon.png","dataSources":["List_Variables","List_finished_report","List_Navigation"],"dependencies":[],"dependents":[],"parameterHints":{},"parameterHintsV2":{},"isOnPremiseConnection":false,"bypassConsent":false,"dataSets":{"https://greenlandscapingmalmo.sharepoint.com/sites/Avvikelsehantering2_al_SharepointSiteURL":{"datasetOverride":{"environmentVariableName":"al_SharepointSiteURL"},"dataSources":{"List_Variables":{"tableName":"e8cc5f80-bf3c-4ea6-9fa8-92755e796143","tableNameOverride":{"environmentVariableName":"al_List_Variables"}},"List_finished_report":{"tableName":"ff034583-73d4-4220-90f4-dafc5cf246f7","tableNameOverride":{"environmentVariableName":"al_List_finished_report"}},"List_Navigation":{"tableName":"8a126430-200c-48d2-814c-0e63a8c029ac","tableNameOverride":{"environmentVariableName":"al_List_Navigation"}}}}},"apiTier":"Standard","actions":["providers/PowerPlatform.Governance/Operations/Read"]},"3b1ce9b4-2dd1-41d5-abde-f5ad6d67c7d8":{"id":"/providers/microsoft.powerapps/apis/shared_sharepointonline","displayName":"SharePoint","iconUri":"https://connectoricons-prod.azureedge.net/u/henryorsborn/partial-builds/asev3migrations-with-resourceTemplate/1.0.1653.3414/sharepointonline/icon.png","dataSources":["List_Report","List_Control"],"dependencies":[],"dependents":[],"parameterHints":{},"parameterHintsV2":{},"isOnPremiseConnection":false,"bypassConsent":false,"dataSets":{"https://greenlandscapingmalmo.sharepoint.com/sites/Avvikelsehantering2_al_SharepointSiteURL":{"datasetOverride":{"environmentVariableName":"al_SharepointSiteURL"},"dataSources":{"List_Report":{"tableName":"25699c65-d136-4833-bf46-49fd003f838b","tableNameOverride":{"environmentVariableName":"al_shared_sharepointonline_29bcca241e624455b4318404ae715111"}},"List_Control":{"tableName":"60907c6b-3d07-43db-bbd8-26243c989e00","tableNameOverride":{"environmentVariableName":"al_shared_sharepointonline_6a1ce7de7b664e3aa6ef01086adac5d6"}}}}},"apiTier":"Standard","actions":["providers/PowerPlatform.Governance/Operations/Read","providers/PowerPlatform.Governance/Operations/Write"]}}</ConnectionReferences>
+  <DatabaseReferences>{}</DatabaseReferences>
+  <AppComponents>[]</AppComponents>
+  <AppComponentDependencies>[]</AppComponentDependencies>
+  <CanConsumeAppPass>1</CanConsumeAppPass>
+  <CanvasAppType>0</CanvasAppType>
+  <BypassConsent>0</BypassConsent>
+  <AdminControlBypassConsent>0</AdminControlBypassConsent>
+  <EmbeddedApp xsi:nil="true"></EmbeddedApp>
+  <IntroducedVersion>1.0</IntroducedVersion>
+  <CdsDependencies>{"cdsdependencies":[{"componenttype":380,"logicalname":"al_SharepointSiteURL","componenttypeplatformname":"EnvironmentVariableDefinition"},{"componenttype":380,"logicalname":"al_List_Variables","componenttypeplatformname":"EnvironmentVariableDefinition"},{"componenttype":380,"logicalname":"al_List_finished_report","componenttypeplatformname":"EnvironmentVariableDefinition"},{"componenttype":380,"logicalname":"al_List_Navigation","componenttypeplatformname":"EnvironmentVariableDefinition"},{"componenttype":380,"logicalname":"al_shared_sharepointonline_29bcca241e624455b4318404ae715111","componenttypeplatformname":"EnvironmentVariableDefinition"},{"componenttype":380,"logicalname":"al_shared_sharepointonline_6a1ce7de7b664e3aa6ef01086adac5d6","componenttypeplatformname":"EnvironmentVariableDefinition"}]}</CdsDependencies>
+  <IsCustomizable>1</IsCustomizable>
+  <BackgroundImageUri>/CanvasApps/al_app_0b0bb_BackgroundImageUri</BackgroundImageUri>
+  <DocumentUri>/CanvasApps/al_app_0b0bb_DocumentUri.msapp</DocumentUri>
+</CanvasApp>

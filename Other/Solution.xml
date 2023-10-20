@@ -1,0 +1,139 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ImportExportXml version="9.2.23093.238" SolutionPackageVersion="9.2" languagecode="1053" generatedBy="CrmLive" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SolutionManifest>
+    <UniqueName>MyTestProject</UniqueName>
+    <LocalizedNames>
+      <LocalizedName description="MyTestProject" languagecode="1053" />
+    </LocalizedNames>
+    <Descriptions />
+    <Version>1.0.0.0</Version>
+    <Managed>0</Managed>
+    <Publisher>
+      <UniqueName>AndreasL</UniqueName>
+      <LocalizedNames>
+        <LocalizedName description="Andreas" languagecode="1053" />
+      </LocalizedNames>
+      <Descriptions />
+      <EMailAddress xsi:nil="true"></EMailAddress>
+      <SupportingWebsiteUrl xsi:nil="true"></SupportingWebsiteUrl>
+      <CustomizationPrefix>al</CustomizationPrefix>
+      <CustomizationOptionValuePrefix>12091</CustomizationOptionValuePrefix>
+      <Addresses>
+        <Address>
+          <AddressNumber>1</AddressNumber>
+          <AddressTypeCode>1</AddressTypeCode>
+          <City xsi:nil="true"></City>
+          <County xsi:nil="true"></County>
+          <Country xsi:nil="true"></Country>
+          <Fax xsi:nil="true"></Fax>
+          <FreightTermsCode xsi:nil="true"></FreightTermsCode>
+          <ImportSequenceNumber xsi:nil="true"></ImportSequenceNumber>
+          <Latitude xsi:nil="true"></Latitude>
+          <Line1 xsi:nil="true"></Line1>
+          <Line2 xsi:nil="true"></Line2>
+          <Line3 xsi:nil="true"></Line3>
+          <Longitude xsi:nil="true"></Longitude>
+          <Name xsi:nil="true"></Name>
+          <PostalCode xsi:nil="true"></PostalCode>
+          <PostOfficeBox xsi:nil="true"></PostOfficeBox>
+          <PrimaryContactName xsi:nil="true"></PrimaryContactName>
+          <ShippingMethodCode>1</ShippingMethodCode>
+          <StateOrProvince xsi:nil="true"></StateOrProvince>
+          <Telephone1 xsi:nil="true"></Telephone1>
+          <Telephone2 xsi:nil="true"></Telephone2>
+          <Telephone3 xsi:nil="true"></Telephone3>
+          <TimeZoneRuleVersionNumber xsi:nil="true"></TimeZoneRuleVersionNumber>
+          <UPSZone xsi:nil="true"></UPSZone>
+          <UTCOffset xsi:nil="true"></UTCOffset>
+          <UTCConversionTimeZoneCode xsi:nil="true"></UTCConversionTimeZoneCode>
+        </Address>
+        <Address>
+          <AddressNumber>2</AddressNumber>
+          <AddressTypeCode>1</AddressTypeCode>
+          <City xsi:nil="true"></City>
+          <County xsi:nil="true"></County>
+          <Country xsi:nil="true"></Country>
+          <Fax xsi:nil="true"></Fax>
+          <FreightTermsCode xsi:nil="true"></FreightTermsCode>
+          <ImportSequenceNumber xsi:nil="true"></ImportSequenceNumber>
+          <Latitude xsi:nil="true"></Latitude>
+          <Line1 xsi:nil="true"></Line1>
+          <Line2 xsi:nil="true"></Line2>
+          <Line3 xsi:nil="true"></Line3>
+          <Longitude xsi:nil="true"></Longitude>
+          <Name xsi:nil="true"></Name>
+          <PostalCode xsi:nil="true"></PostalCode>
+          <PostOfficeBox xsi:nil="true"></PostOfficeBox>
+          <PrimaryContactName xsi:nil="true"></PrimaryContactName>
+          <ShippingMethodCode>1</ShippingMethodCode>
+          <StateOrProvince xsi:nil="true"></StateOrProvince>
+          <Telephone1 xsi:nil="true"></Telephone1>
+          <Telephone2 xsi:nil="true"></Telephone2>
+          <Telephone3 xsi:nil="true"></Telephone3>
+          <TimeZoneRuleVersionNumber xsi:nil="true"></TimeZoneRuleVersionNumber>
+          <UPSZone xsi:nil="true"></UPSZone>
+          <UTCOffset xsi:nil="true"></UTCOffset>
+          <UTCConversionTimeZoneCode xsi:nil="true"></UTCConversionTimeZoneCode>
+        </Address>
+      </Addresses>
+    </Publisher>
+    <RootComponents>
+      <RootComponent type="29" id="{34643294-336c-ee11-9ae7-0022489934ec}" behavior="0" />
+      <RootComponent type="29" id="{476b865d-3869-ee11-9ae7-002248993e6c}" behavior="0" />
+      <RootComponent type="29" id="{7fe8f130-4468-ee11-9ae7-002248993e6c}" behavior="0" />
+      <RootComponent type="29" id="{8a29cb2f-f668-ee11-9ae7-0022489934ec}" behavior="0" />
+      <RootComponent type="300" schemaName="al_app_0b0bb" behavior="0" />
+      <RootComponent type="300" schemaName="al_setup_3ede0" behavior="0" />
+    </RootComponents>
+    <MissingDependencies>
+      <MissingDependency>
+        <Required type="1" schemaName="environmentvariabledefinition" displayName="Environment Variable Definition" solution="EnvironmentVariables (1.0.2.293)" />
+        <Dependent type="29" displayName="Create Lists" id="{8a29cb2f-f668-ee11-9ae7-0022489934ec}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="1" schemaName="environmentvariabledefinition" displayName="Environment Variable Definition" solution="EnvironmentVariables (1.0.2.293)" />
+        <Dependent type="300" schemaName="al_setup_3ede0" displayName="Setup" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="1" schemaName="environmentvariablevalue" displayName="Environment Variable Value" solution="EnvironmentVariables (1.0.2.293)" />
+        <Dependent type="29" displayName="create sharepoint list" id="{7fe8f130-4468-ee11-9ae7-002248993e6c}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="1" schemaName="environmentvariablevalue" displayName="Environment Variable Value" solution="EnvironmentVariables (1.0.2.293)" />
+        <Dependent type="29" displayName="Create Lists" id="{8a29cb2f-f668-ee11-9ae7-0022489934ec}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="1" schemaName="environmentvariablevalue" displayName="Environment Variable Value" solution="EnvironmentVariables (1.0.2.293)" />
+        <Dependent type="300" schemaName="al_setup_3ede0" displayName="Setup" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="connectionreference" displayName="cat_CDSCurrentEnvConnectionReference" solution="ArchitectureReview (1.0.0.132)" id.connectionreferencelogicalname="cat_CDSCurrentEnvConnectionReference" />
+        <Dependent type="29" displayName="create sharepoint list" id="{7fe8f130-4468-ee11-9ae7-002248993e6c}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="connectionreference" displayName="cat_sharedpowerappsforappmakers_56d1d" solution="ArchitectureReview (1.0.0.132)" id.connectionreferencelogicalname="cat_sharedpowerappsforappmakers_56d1d" />
+        <Dependent type="29" displayName="Button -&gt; Get Apps" id="{476b865d-3869-ee11-9ae7-002248993e6c}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="connectionreference" displayName="cat_sharedpowerappsforappmakers_56d1d" solution="ArchitectureReview (1.0.0.132)" id.connectionreferencelogicalname="cat_sharedpowerappsforappmakers_56d1d" />
+        <Dependent type="29" displayName="Create Lists" id="{8a29cb2f-f668-ee11-9ae7-0022489934ec}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="connectionreference" displayName="new_sharedcommondataserviceforapps_fcef3" solution="Active" id.connectionreferencelogicalname="new_sharedcommondataserviceforapps_fcef3" />
+        <Dependent type="29" displayName="create sharepoint list" id="{7fe8f130-4468-ee11-9ae7-002248993e6c}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="connectionreference" displayName="new_sharedcommondataserviceforapps_fcef3" solution="Active" id.connectionreferencelogicalname="new_sharedcommondataserviceforapps_fcef3" />
+        <Dependent type="29" displayName="Create Lists" id="{8a29cb2f-f668-ee11-9ae7-0022489934ec}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="connectionreference" displayName="new_sharedsharepointonline_7493a" solution="Active" id.connectionreferencelogicalname="new_sharedsharepointonline_7493a" />
+        <Dependent type="29" displayName="Button -&gt; Get Apps" id="{476b865d-3869-ee11-9ae7-002248993e6c}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="connectionreference" displayName="new_sharedsharepointonline_7493a" solution="Active" id.connectionreferencelogicalname="new_sharedsharepointonline_7493a" />
+        <Dependent type="29" displayName="Create Lists" id="{8a29cb2f-f668-ee11-9ae7-0022489934ec}" />
+      </MissingDependency>
+    </MissingDependencies>
+  </SolutionManifest>
+</ImportExportXml>

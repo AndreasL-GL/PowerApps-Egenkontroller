@@ -1,0 +1,279 @@
+Screen1_2 As screen:
+
+    FormViewer1 As formViewer:
+        DataSource: ='List_Report'
+        Height: =189
+        Item: =LookUp('List_Report',ID = First(colNavigation).ReportID)
+        Width: =640
+        Y: =78
+        ZIndex: =1
+
+        Information_DataCard1 As typedDataCard.textualViewCard:
+            BorderStyle: =BorderStyle.Solid
+            DataField: ="Information"
+            Default: =ThisItem.Information
+            DisplayMode: =DisplayMode.View
+            DisplayName: =DataSourceInfo([@'List_Report'],DataSourceInfo.DisplayName,"Information")
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =40
+            Required: =false
+            Width: =640
+            X: =0
+            Y: =0
+            ZIndex: =1
+
+            DataCardKey1 As label:
+                AutoHeight: =true
+                Height: =48
+                Size: =21
+                Text: =Parent.DisplayName
+                Width: =Parent.Width - 60
+                Wrap: =false
+                X: =30
+                Y: =10
+                ZIndex: =1
+
+            DataCardValue1 As label:
+                AutoHeight: =true
+                DisplayMode: =Parent.DisplayMode
+                PaddingLeft: =0
+                PaddingRight: =0
+                PaddingTop: =0
+                Size: =21
+                Text: =Parent.Default
+                Width: =Parent.Width - 60
+                X: =30
+                Y: =DataCardKey1.Y + DataCardKey1.Height + 5
+                ZIndex: =2
+
+    Label1 As label:
+        Align: =Align.Center
+        FontWeight: =FontWeight.Semibold
+        Height: =70
+        Size: =21
+        Text: =Gallery3.Selected.Value
+        Width: =640
+        ZIndex: =2
+
+    "Gallery2 As gallery.'BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0'":
+        DelayItemLoading: =true
+        Height: =342
+        Items: =Filter('List_Control',LookUp(List_Navigation,Concat(NavPath,Value,",")=Concat(colClickedNavs,Value,",")).ReportID = ReportID)
+        Layout: =Layout.Vertical
+        LoadingSpinner: =LoadingSpinner.Data
+        TemplatePadding: =0
+        TemplateSize: =69
+        Y: =267
+        ZIndex: =4
+
+        Title2 As label:
+            FontWeight: =If(ThisItem.IsSelected, FontWeight.Semibold, FontWeight.Normal)
+            Height: =45
+            OnSelect: =Select(Parent)
+            PaddingBottom: =0
+            PaddingLeft: =0
+            PaddingRight: =0
+            PaddingTop: =0
+            Text: =ThisItem.Control
+            VerticalAlign: =VerticalAlign.Top
+            Width: =346
+            X: =40
+            Y: =16
+            ZIndex: =2
+
+        Separator2 As rectangle:
+            Height: =8
+            OnSelect: =Select(Parent)
+            Width: =Parent.TemplateWidth
+            Y: =Parent.TemplateHeight - Self.Height
+            ZIndex: =5
+
+        Toggle1 As toggleSwitch:
+            Default: =ThisItem.CValue
+            FalseText: ="Ej utfört"
+            Height: =31
+            OnSelect: =Select(Parent)
+            Size: =21
+            TrueText: ="Utfört"
+            Width: =193
+            X: =386
+            Y: =16
+            ZIndex: =8
+
+    Button1 As button:
+        Height: =70
+        OnSelect: |-
+            =ClearCollect(colGallery2,Gallery2.AllItems);
+            Patch(List_Report,LookUp(List_Report,ID = LookUp(List_Navigation,Concat(NavPath,Value,",")=Concat(colClickedNavs,Value,",")).ReportID),Form1.Updates);
+            ForAll(RenameColumns(Gallery2.AllItems,"Control","GalleryControl"),Patch(List_Control,LookUp(List_Control,GalleryControl=Control && ReportID=LookUp(List_Navigation,Concat(NavPath,Value,",")=Concat(colClickedNavs,Value,",")).ReportID), {CValue:Toggle1.Value,ReportID:LookUp(List_Navigation,Concat(NavPath,Value,",")=Concat(colClickedNavs,Value,",")).ReportID}));
+            Navigate(NavigationScreen);ClearCollect(colClickedNavs,[]);Set(varNavIndex,1)
+            
+            
+            /*
+            ForAll(RenameColumns(Gallery2.AllItems;"Control";"GalleryControl");Patch('000 Projekt Controls';LookUp('000 Projekt Controls';GalleryControl=Control && ReportID=First(colNavigation).ReportID); {CValue:Toggle1.Value;ReportID:First(colNavigation).ReportID}));;
+            Patch('000 Projekt Report';LookUp('000 Projekt Report';ID = First(colNavigation).ReportID);Form1.Updates);;
+            Refresh('000 Projekt Controls');;Refresh('000 Projekt Report');;Navigate(NavigationScreen)
+            //Refresh(List_Report);;Navigate(StartScreen)*/
+        Size: =24
+        Text: ="Knapp"
+        Width: =280
+        X: =165
+        Y: =1041
+        ZIndex: =5
+
+    Icon1 As icon.BackArrow:
+        Icon: =Icon.BackArrow
+        OnSelect: =Navigate(NavigationScreen);ClearCollect(colClickedNavs,[]);Set(varNavIndex,1)
+        ZIndex: =6
+
+    Label3 As label:
+        Height: =70
+        Size: =21
+        Text: =LookUp(List_Navigation,Concat(NavPath,Value,",")=Concat(colClickedNavs,Value,",")).ReportID
+        Width: =180
+        X: =460
+        ZIndex: =7
+
+    Form1 As form:
+        DataSource: =List_Report
+        Height: =399
+        Item: =LookUp('List_Report',ID = LookUp(List_Navigation,Concat(NavPath,Value,",")=Concat(colClickedNavs,Value,",")).ReportID)
+        Width: =640
+        Y: =613
+        ZIndex: =8
+
+        Status_DataCard1 As typedDataCard.toggleEditCard:
+            BorderStyle: =BorderStyle.Solid
+            DataField: ="Status"
+            Default: =ThisItem.Status
+            DisplayMode: =Parent.DisplayMode
+            DisplayName: =DataSourceInfo([@List_Report],DataSourceInfo.DisplayName,"Status")
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =50
+            Required: =false
+            Update: =DataCardValue4.Value
+            Width: =640
+            X: =0
+            Y: =0
+            ZIndex: =9
+
+            DataCardKey4 As label:
+                AutoHeight: =true
+                Height: =48
+                Size: =21
+                Text: =Parent.DisplayName
+                Width: =Parent.Width - 60
+                Wrap: =false
+                X: =30
+                Y: =10
+                ZIndex: =1
+
+            DataCardValue4 As toggleSwitch:
+                BorderColor: =If(IsBlank(Parent.Error), Parent.BorderColor, Color.Red)
+                Default: =Parent.Default
+                DisplayMode: =Parent.DisplayMode
+                Height: =49
+                Size: =21
+                Tooltip: =Parent.DisplayName
+                Width: =154
+                X: =30
+                Y: =DataCardKey4.Y + DataCardKey4.Height + 5
+                ZIndex: =2
+
+            ErrorMessage3 As label:
+                AutoHeight: =true
+                Height: =10
+                Live: =Live.Assertive
+                PaddingBottom: =0
+                PaddingLeft: =0
+                PaddingRight: =0
+                PaddingTop: =0
+                Size: =24
+                Text: =Parent.Error
+                Visible: =Parent.DisplayMode=DisplayMode.Edit
+                Width: =Parent.Width - 60
+                X: =30
+                Y: =DataCardValue4.Y + DataCardValue4.Height
+                ZIndex: =3
+
+            StarVisible3 As label:
+                Align: =Align.Center
+                Height: =DataCardKey4.Height
+                Size: =21
+                Text: ="*"
+                Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
+                Width: =30
+                Wrap: =false
+                Y: =DataCardKey4.Y
+                ZIndex: =4
+
+        "'Bifogade filer ({Attachments})_DataCard1' As typedDataCard.attachmentsEditCard":
+            BorderStyle: =BorderStyle.Solid
+            DataField: ="{Attachments}"
+            Default: =ThisItem.'Bifogade filer ({Attachments})'
+            DisplayMode: =Parent.DisplayMode
+            DisplayName: =DataSourceInfo([@List_Report],DataSourceInfo.DisplayName,"{Attachments}")
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =50
+            Required: =false
+            Update: =DataCardValue8.Attachments
+            Width: =640
+            X: =0
+            Y: =1
+            ZIndex: =9
+
+            DataCardKey8 As label:
+                AutoHeight: =true
+                Height: =48
+                Size: =21
+                Text: =Parent.DisplayName
+                Width: =Parent.Width - 60
+                Wrap: =false
+                X: =30
+                Y: =10
+                ZIndex: =1
+
+            DataCardValue8 As attachments:
+                BorderColor: =If(IsBlank(Parent.Error), Parent.BorderColor, Color.Red)
+                DisplayMode: =Parent.DisplayMode
+                Height: =172
+                IsInDataCard: =true
+                Items: =Parent.Default
+                PaddingBottom: =5
+                PaddingLeft: =If(Self.DisplayMode = DisplayMode.Edit, 5, 0)
+                PaddingRight: =5
+                PaddingTop: =5
+                Size: =21
+                Tooltip: =Parent.DisplayName
+                Width: =Parent.Width - 60
+                X: =30
+                Y: =DataCardKey8.Y + DataCardKey8.Height + 5
+                ZIndex: =2
+
+            ErrorMessage7 As label:
+                AutoHeight: =true
+                Height: =10
+                Live: =Live.Assertive
+                PaddingBottom: =0
+                PaddingLeft: =0
+                PaddingRight: =0
+                PaddingTop: =0
+                Size: =24
+                Text: =Parent.Error
+                Visible: =Parent.DisplayMode=DisplayMode.Edit
+                Width: =Parent.Width - 60
+                X: =30
+                Y: =DataCardValue8.Y + DataCardValue8.Height
+                ZIndex: =3
+
+            StarVisible7 As label:
+                Align: =Align.Center
+                Height: =DataCardKey8.Height
+                Size: =21
+                Text: ="*"
+                Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
+                Width: =30
+                Wrap: =false
+                Y: =DataCardKey8.Y
+                ZIndex: =4
+

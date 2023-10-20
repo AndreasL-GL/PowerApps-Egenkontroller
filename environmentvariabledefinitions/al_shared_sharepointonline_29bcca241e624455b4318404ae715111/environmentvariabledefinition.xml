@@ -1,0 +1,16 @@
+<environmentvariabledefinition schemaname="al_shared_sharepointonline_29bcca241e624455b4318404ae715111">
+  <apiid>/providers/microsoft.powerapps/apis/shared_sharepointonline</apiid>
+  <defaultvalue>f0d8d957-f5e0-4278-81a5-3f9cc3a39c43</defaultvalue>
+  <displayname default="List_Report">
+    <label description="List_Report" languagecode="1053" />
+  </displayname>
+  <introducedversion>1.0.0.0</introducedversion>
+  <iscustomizable>1</iscustomizable>
+  <isrequired>0</isrequired>
+  <parameterkey>table</parameterkey>
+  <parentdefinitionid>
+    <schemaname>al_SharepointSiteURL</schemaname>
+  </parentdefinitionid>
+  <secretstore>0</secretstore>
+  <type>100000004</type>
+</environmentvariabledefinition>

@@ -1,0 +1,275 @@
+{
+  "properties": {
+    "connectionReferences": {
+      "shared_powerappsforappmakers": {
+        "runtimeSource": "invoker",
+        "connection": {
+          "connectionReferenceLogicalName": "cat_sharedpowerappsforappmakers_56d1d"
+        },
+        "api": {
+          "name": "shared_powerappsforappmakers"
+        }
+      },
+      "shared_sharepointonline": {
+        "runtimeSource": "invoker",
+        "connection": {
+          "connectionReferenceLogicalName": "new_sharedsharepointonline_7493a"
+        },
+        "api": {
+          "name": "shared_sharepointonline"
+        }
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$connections": {
+          "defaultValue": {},
+          "type": "Object"
+        },
+        "$authentication": {
+          "defaultValue": {},
+          "type": "SecureObject"
+        }
+      },
+      "triggers": {
+        "manual": {
+          "metadata": {
+            "operationMetadataId": "0b378e6d-22a7-49f8-9a6f-851edfa50feb"
+          },
+          "type": "Request",
+          "kind": "Button",
+          "inputs": {
+            "schema": {
+              "type": "object",
+              "properties": {},
+              "required": []
+            }
+          }
+        }
+      },
+      "actions": {
+        "Get_Apps": {
+          "runAfter": {
+            "Compose": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "46c96155-44bc-491a-9c3a-1c6c2ed7f5d7"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_powerappsforappmakers",
+              "operationId": "Get-Apps",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_powerappsforappmakers"
+            },
+            "parameters": {
+              "api-version": "2016-11-01",
+              "$top": 250
+            },
+            "authentication": {
+              "type": "Raw",
+              "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']"
+            }
+          }
+        },
+        "Apply_to_each": {
+          "foreach": "@outputs('Get_Apps')?['body/value']",
+          "actions": {
+            "Condition": {
+              "actions": {
+                "Publish_App": {
+                  "runAfter": {},
+                  "metadata": {
+                    "operationMetadataId": "c149781c-eed3-4884-ab0f-721297bc47b9"
+                  },
+                  "type": "OpenApiConnection",
+                  "inputs": {
+                    "host": {
+                      "connectionName": "shared_powerappsforappmakers",
+                      "operationId": "Publish-App",
+                      "apiId": "/providers/Microsoft.PowerApps/apis/shared_powerappsforappmakers"
+                    },
+                    "parameters": {
+                      "app": "@items('Apply_to_each')?['name']",
+                      "api-version": "2017-06-01"
+                    },
+                    "authentication": {
+                      "type": "Raw",
+                      "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']"
+                    }
+                  }
+                }
+              },
+              "runAfter": {},
+              "expression": {
+                "equals": [
+                  "@items('Apply_to_each')?['properties/displayName']",
+                  "@string('MyTestProject')"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "6cba706e-a5d0-41c9-980e-991a5f9fb7e5"
+              },
+              "type": "If"
+            }
+          },
+          "runAfter": {
+            "Get_Apps": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "f5a2659f-547e-40f4-9e3e-e868b75f3e99"
+          },
+          "type": "Foreach"
+        },
+        "Scope": {
+          "actions": {
+            "Get_Apps_2": {
+              "runAfter": {},
+              "metadata": {
+                "operationMetadataId": "de4e859d-f73c-45c7-b03c-b8367b6a5cdb"
+              },
+              "type": "OpenApiConnection",
+              "inputs": {
+                "host": {
+                  "connectionName": "shared_powerappsforappmakers",
+                  "operationId": "Get-Apps",
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_powerappsforappmakers"
+                },
+                "parameters": {
+                  "api-version": "2016-11-01",
+                  "$top": 250
+                },
+                "authentication": {
+                  "type": "Raw",
+                  "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']"
+                }
+              }
+            },
+            "Apply_to_each_6": {
+              "foreach": "@outputs('Get_Apps_2')?['body/value']",
+              "actions": {
+                "Condition_7": {
+                  "actions": {
+                    "Publish_App_2": {
+                      "runAfter": {},
+                      "metadata": {
+                        "operationMetadataId": "a7ae43db-dd57-4efa-823c-5d9217ad0582"
+                      },
+                      "type": "OpenApiConnection",
+                      "inputs": {
+                        "host": {
+                          "connectionName": "shared_powerappsforappmakers",
+                          "operationId": "Publish-App",
+                          "apiId": "/providers/Microsoft.PowerApps/apis/shared_powerappsforappmakers"
+                        },
+                        "parameters": {
+                          "app": "@items('Apply_to_each_6')?['name']",
+                          "api-version": "2017-06-01"
+                        },
+                        "authentication": {
+                          "type": "Raw",
+                          "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']"
+                        }
+                      }
+                    }
+                  },
+                  "runAfter": {},
+                  "expression": {
+                    "equals": [
+                      "@items('Apply_to_each_6')?['properties/displayName']",
+                      "@string('MyTestProject')"
+                    ]
+                  },
+                  "metadata": {
+                    "operationMetadataId": "a3ce9590-51a7-4ac4-ba9c-0950fd11f921"
+                  },
+                  "type": "If"
+                }
+              },
+              "runAfter": {
+                "Get_Apps_2": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "89b89d67-580f-47b8-a197-dd751bc08c8e"
+              },
+              "type": "Foreach"
+            }
+          },
+          "runAfter": {
+            "Initialize_variable": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "551d6076-97b5-4bca-8182-9c0fa7c59418"
+          },
+          "type": "Scope"
+        },
+        "Initialize_variable": {
+          "runAfter": {
+            "Apply_to_each": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "f4c30cab-c6ad-4044-84dd-db59283e70ed"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "List_Control_Schema",
+                "type": "string"
+              }
+            ]
+          }
+        },
+        "Send_an_HTTP_request_to_SharePoint": {
+          "runAfter": {},
+          "metadata": {
+            "operationMetadataId": "5d82f10a-040b-4b31-bb71-5905029787b6"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_sharepointonline",
+              "operationId": "HttpRequest",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+            },
+            "parameters": {
+              "dataset": "https://greenlandscapingmalmo.sharepoint.com/sites/Avvikelsehantering2",
+              "parameters/method": "GET",
+              "parameters/uri": "_api/Web/Lists(guid'490996f4-455d-4acf-a2fe-b4e18831c860')/Fields"
+            },
+            "authentication": {
+              "type": "Raw",
+              "value": "@json(decodeBase64(triggerOutputs().headers['X-MS-APIM-Tokens']))['$ConnectionKey']"
+            }
+          }
+        },
+        "Compose": {
+          "runAfter": {
+            "Send_an_HTTP_request_to_SharePoint": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "04ba3d27-e4d9-4e4c-af74-64a296bc630a"
+          },
+          "type": "Compose",
+          "inputs": "@concat('SP.Data.',replace('000 Project Report',' ', '_x0020_'),'ListItem')"
+        }
+      }
+    },
+    "templateName": ""
+  },
+  "schemaVersion": "1.0.0.0"
+}

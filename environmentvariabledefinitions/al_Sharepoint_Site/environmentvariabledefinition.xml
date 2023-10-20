@@ -1,0 +1,11 @@
+<environmentvariabledefinition schemaname="al_Sharepoint_Site">
+  <defaultvalue>https://greenlandscapingmalmo.sharepoint.com/sites/Avvikelsehantering2</defaultvalue>
+  <displayname default="Sharepoint_Site">
+    <label description="Sharepoint_Site" languagecode="1053" />
+  </displayname>
+  <introducedversion>1.0.0.0</introducedversion>
+  <iscustomizable>1</iscustomizable>
+  <isrequired>0</isrequired>
+  <secretstore>0</secretstore>
+  <type>100000000</type>
+</environmentvariabledefinition>

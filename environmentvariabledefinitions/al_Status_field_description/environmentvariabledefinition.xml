@@ -1,0 +1,11 @@
+<environmentvariabledefinition schemaname="al_Status_field_description">
+  <defaultvalue>Klarmarkering för egenkontrollen</defaultvalue>
+  <displayname default="Status_field_description">
+    <label description="Status_field_description" languagecode="1053" />
+  </displayname>
+  <introducedversion>1.0.0.0</introducedversion>
+  <iscustomizable>1</iscustomizable>
+  <isrequired>0</isrequired>
+  <secretstore>0</secretstore>
+  <type>100000000</type>
+</environmentvariabledefinition>

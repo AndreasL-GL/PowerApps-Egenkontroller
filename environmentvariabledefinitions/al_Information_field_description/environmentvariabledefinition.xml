@@ -1,0 +1,14 @@
+<environmentvariabledefinition schemaname="al_Information_field_description">
+  <defaultvalue>Innehåller information till personal</defaultvalue>
+  <description default="Multilanguage support for information field description">
+    <label description="Multilanguage support for information field description" languagecode="1053" />
+  </description>
+  <displayname default="Information_field_description">
+    <label description="Information_field_description" languagecode="1053" />
+  </displayname>
+  <introducedversion>1.0.0.0</introducedversion>
+  <iscustomizable>1</iscustomizable>
+  <isrequired>0</isrequired>
+  <secretstore>0</secretstore>
+  <type>100000000</type>
+</environmentvariabledefinition>
