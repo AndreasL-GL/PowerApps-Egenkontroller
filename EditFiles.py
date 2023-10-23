@@ -157,7 +157,7 @@ def change_list_Id(solution_path,ListFinishedReportID, ListReportID, ListControl
                     if "Report_app" in text:
                         print(fpath)
                         with open(fpath,'w',encoding='utf-8') as f:
-                            f.write(text.replace('Report_app',ProjectName))
+                            f.write(text.replace('MyTestProject',ProjectName))
                             
                 except: pass
                 if "Solution.xml" in fpath:
