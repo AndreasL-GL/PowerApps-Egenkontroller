@@ -185,6 +185,10 @@ ProjectName = "MyTestProject"
 SharepointSiteUrl = "https://greenlandscapingmalmo.sharepoint.com/sites/Avvikelsehantering2"
 if len(sys.argv) == 9:
     (filename, solution_path,finishedListreportid, ReportId, ControlId, NavigationId, VariablesID, ProjectName, SharepointSiteUrl) = sys.argv
+    print("filename: ", filename)
+    print("solution_path: ", "solution_path")
+    print("ProjectName: ", ProjectName)
+    print("SharepointSiteUrl", SharepointSiteUrl) 
     if True:
         change_list_Id(solution_path, finishedListreportid, ReportId, ControlId, NavigationId, VariablesID, ProjectName, SharepointSiteUrl)
         # with open(r"C:\Users\anlo22\OneDrive - GLnet\Dokument\Code\Projects\2023-10-19 AzureDevops Egenkontroller\CanvasApps\App\pkgs\TableDefinitions\List_Report.json", 'r',encoding='utf-8') as f:
