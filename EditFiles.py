@@ -143,6 +143,11 @@ def change_list_Id(solution_path,ListFinishedReportID, ListReportID, ListControl
         for root, _ , files in os.walk(solution_path):
             for file in files:
                 fpath = os.path.join(root,file)
+                if "NavigationScreen.fx.yaml" in fpath:
+                    with open(fpath, 'r',encoding='utf-8') as f:
+                        text = f.read()
+                    with open(fpath,'w',encoding='utf-8') as f:
+                        f.write(text)
                 for old,new,fname in zip(old_Ids,new_Ids, filenames):
                     if fname in fpath and "TableDefinitions" in fpath:
                         try:
